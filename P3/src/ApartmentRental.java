@@ -2,7 +2,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import db.SimpleJDBC;
+import db.JDBCConnectionManager;
 
 /**	
  * 	COMP 421 - Group 40
@@ -24,7 +24,7 @@ public class ApartmentRental {
 		// TODO Auto-generated method stub
 		System.out.println(args[0]);
 		
-		Connection conn = SimpleJDBC.initializeDbConnection(args[0], args[1]);
+		Connection conn = JDBCConnectionManager.initializeDbConnection(args[0], args[1]);
 		test(conn);
 	}
 
