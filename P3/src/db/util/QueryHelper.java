@@ -23,8 +23,10 @@ public class QueryHelper {
 		try {
 			filePath = URLDecoder.decode(classLoader.getResource(fileName).getFile(), "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			System.out.println("Could not find file: " + fileName);
 			e1.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Could not find file: " + fileName);
+			e.printStackTrace();
 		}
 		
 		if (filePath == "") throw new FileNotFoundException();
