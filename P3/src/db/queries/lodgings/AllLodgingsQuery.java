@@ -8,6 +8,7 @@ import java.util.List;
 
 import db.JDBCConnectionManager;
 import db.models.Lodging;
+import db.util.QueryHelper;
 
 public class AllLodgingsQuery {
 	private Connection conn;
@@ -31,7 +32,7 @@ public class AllLodgingsQuery {
 		try {
 			Statement stmnt = conn.createStatement();
 			
-			String selectLodgingsSQL = "SELECT * FROM lodgings";
+			String selectLodgingsSQL = QueryHelper.findQuery("lodgings/getAllLodgings.sql");
 			ResultSet rs = stmnt.executeQuery(selectLodgingsSQL);
 			
 			Lodging l;
@@ -54,7 +55,6 @@ public class AllLodgingsQuery {
 				result.add(l);
 			}
 		} catch (Exception e) {
-			// TODO how to handle?
 			e.printStackTrace();
 		}
 		
