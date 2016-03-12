@@ -5,10 +5,6 @@ package ui;
 
 import java.util.Scanner;
 
-/**
- * @author Oleg
- *
- */
 public class ScreenRenderer {
 	private IScreen currentScreen;
 	
