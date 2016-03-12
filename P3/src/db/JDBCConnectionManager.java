@@ -27,6 +27,8 @@ public class JDBCConnectionManager {
 	      	Connection con = DriverManager.getConnection(url, username, password);
 	      	conn = con;
 	      	
+	      	conn.setAutoCommit(false);
+	      	
 	      	System.out.println("Connection Successful");
 	    } catch (Exception e) {
 	    	System.out.println("Connection could not be established");

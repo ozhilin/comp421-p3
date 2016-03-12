@@ -1,30 +1,14 @@
-package db.queries.lodgings;
+package db.managers;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import db.JDBCConnectionManager;
 import db.models.Lodging;
 import db.util.QueryHelper;
 
-public class AllLodgingsQuery {
-	private Connection conn;
-	
-	public AllLodgingsQuery() {
-		try {
-			conn = JDBCConnectionManager.getConnection();
-		} catch (Exception e) {
-			System.out.println("Connection to the database could not be established.");
-			e.printStackTrace();
-		}
-	}
-	
-	public AllLodgingsQuery(Connection conn) {
-		this.conn = conn;
-	}
+public class LodgingsManager extends AModelManager {
 	
 	public List<Lodging> getAllLodgings() {
 		List<Lodging> result = new ArrayList<Lodging>();
@@ -32,7 +16,7 @@ public class AllLodgingsQuery {
 		try {
 			Statement stmnt = conn.createStatement();
 			
-			String selectLodgingsSQL = QueryHelper.findQuery("lodgings/getAllLodgings.sql");
+			String selectLodgingsSQL = QueryHelper.findQuery("lodgings/allLodgingsQuery.sql");
 			ResultSet rs = stmnt.executeQuery(selectLodgingsSQL);
 			
 			Lodging l;

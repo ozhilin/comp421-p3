@@ -23,7 +23,7 @@ public class QueryHelper {
 		try {
 			filePath = URLDecoder.decode(classLoader.getResource(fileName).getFile(), "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
+			System.out.println("Could not find file: " + fileName);
 			e1.printStackTrace();
 		}
 		
@@ -50,7 +50,7 @@ public class QueryHelper {
 	// Test method
 	public static void main(String[] args) {
 		try {
-			System.out.println(QueryHelper.findQuery("lodgings/allLodgingsQuery.sql"));
+			System.out.println(QueryHelper.findQuery("users/createUser.sql"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
