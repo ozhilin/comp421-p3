@@ -22,7 +22,7 @@ public class ApartmentRental {
 	 * @param args The database password is provided as a command line argument 
 	 */
 	public static void main(String[] args) {
-//		Connection conn = JDBCConnectionManager.initializeDbConnection(args[0], args[1]);
+		Connection conn = JDBCConnectionManager.getConnection(args[0], args[1]);
 		ScreenRenderer screenRenderer = new ScreenRenderer();
 		screenRenderer.draw();
 		

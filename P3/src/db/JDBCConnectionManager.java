@@ -17,7 +17,7 @@ public class JDBCConnectionManager {
 	/**
 	 * 	Registers the driver and makes the connection.
 	 */
-	public static Connection initializeDbConnection(String username, String password) {
+	public static Connection getConnection(String username, String password) {
 		if (conn != null) {
 			return conn;
 		}
@@ -34,6 +34,14 @@ public class JDBCConnectionManager {
 	    }
 	    
 	    return conn;
+	}
+	
+	public static Connection getConnection() throws Exception {
+		if (conn != null) {
+			return conn;
+		}
+		
+		return null;
 	}
 	
 	public static void closeConnection() {
