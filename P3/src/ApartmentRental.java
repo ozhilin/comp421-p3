@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import ui.ScreenRenderer;
 import db.JDBCConnectionManager;
 
 /**	
@@ -21,36 +22,10 @@ public class ApartmentRental {
 	 * @param args The database password is provided as a command line argument 
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println(args[0]);
+//		Connection conn = JDBCConnectionManager.initializeDbConnection(args[0], args[1]);
+		ScreenRenderer screenRenderer = new ScreenRenderer();
+		screenRenderer.draw();
 		
-		Connection conn = JDBCConnectionManager.initializeDbConnection(args[0], args[1]);
-		test(conn);
-	}
-
-	private static void test(Connection con) {
-		// Querying a table
-		try {
-				Statement statement = con.createStatement ();
-			
-		    String querySQL = "SELECT * FROM Employees'";
-		    System.out.println (querySQL) ;
-		    java.sql.ResultSet rs = statement.executeQuery ( querySQL ) ;
-		    while ( rs.next ( ) ) {
-			int id = rs.getInt ( 1 ) ;
-			String name = rs.getString (2);
-			System.out.println ("id:  " + id);
-			System.out.println ("name:  " + name);
-		    }
-		    System.out.println ("DONE");
-		} catch (SQLException e)
-		    {
-			int sqlCode = e.getErrorCode(); // Get SQLCODE
-			String sqlState = e.getSQLState(); // Get SQLSTATE
-
-		    // Your code to handle errors comes here;
-		    // something more meaningful than a print would be good
-		    System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
-	      }
+		System.out.println("Done");
 	}
 }
