@@ -1,6 +1,10 @@
 import java.sql.Connection;
+import java.util.List;
+
 import ui.ScreenRenderer;
 import db.JDBCConnectionManager;
+import db.models.Lodging;
+import db.queries.lodgings.AllLodgingsQuery;
 
 /**	
  * 	COMP 421 - Group 40
@@ -20,9 +24,21 @@ public class ApartmentRental {
 	 */
 	public static void main(String[] args) {
 		Connection conn = JDBCConnectionManager.getConnection(args[0], args[1]);
-		ScreenRenderer screenRenderer = new ScreenRenderer();
-		screenRenderer.draw();
+		
+		allLodgingsExample();
 		
 		System.out.println("Done");
+	}
+	
+	/**
+	 * 	EXAMPLE USAGE YO
+	 */
+	private static void allLodgingsExample() {
+		AllLodgingsQuery alq = new AllLodgingsQuery();
+		List<Lodging> lodgings = alq.getAllLodgings();
+		
+		for (Lodging l : lodgings) {
+			System.out.println(l.lid + ", " + l.name);
+		}
 	}
 }
