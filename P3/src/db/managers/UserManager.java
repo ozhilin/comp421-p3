@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import db.models.User;
 import db.util.QueryHelper;
+import db.util.StringHelper;
 
 public class UserManager extends AModelManager {
 	public void createUser(User user) {
@@ -23,10 +24,9 @@ public class UserManager extends AModelManager {
 			pstmnt.setBoolean(7, user.isHost);
 			
 			pstmnt.executeUpdate();
-			
 			conn.commit();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Create query not found");
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -56,12 +56,43 @@ public class UserManager extends AModelManager {
 			
 			return user;
 		} catch (FileNotFoundException e) {
-			System.out.println("Login failed");
+			System.out.println("Login query not found");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Create a new user instance and pass it to this method, it will update
+	 * all columns with non null values
+	 * 
+	 * Note, this will update all of the fields but not the email address, 
+	 * since that is impossible, given that the email is our user id.
+	 * @param user
+	 */
+	public void updateUser(User user) {
+		try {
+			String updateQuery = QueryHelper.findQuery("users/updateUser.sql");
+			PreparedStatement pstmnt = conn.prepareStatement(updateQuery);
+			
+			pstmnt.setString(1, user.firstName);
+			pstmnt.setString(2, user.lastName);
+			pstmnt.setDate(3, user.birthdate);
+			pstmnt.setBoolean(4, user.isCustomer);
+			pstmnt.setBoolean(5, user.isHost);
+			pstmnt.setString(6, user.email);
+			
+			pstmnt.executeUpdate();
+			conn.commit();
+		} catch (FileNotFoundException e) {
+			System.out.println("Update query not found");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -10,14 +10,13 @@ import java.util.Scanner;
 public class QueryHelper {
 	public static String findQuery(String name) throws FileNotFoundException {
 		QueryHelper q = new QueryHelper();
-		
+
 		return q.getFileWithUtil(name);
 	}
 
 	private String getFileWithUtil(String fileName) throws FileNotFoundException {
 		StringBuilder result = new StringBuilder();
 		ClassLoader classLoader = getClass().getClassLoader();
-		
 
 		String filePath = "";
 		try {
@@ -28,9 +27,9 @@ public class QueryHelper {
 			System.out.println("Could not find file: " + fileName);
 			e.printStackTrace();
 		}
-		
-		if (filePath == "") throw new FileNotFoundException();
-		
+
+		if (filePath == "")	throw new FileNotFoundException();
+
 		File file = new File(filePath);
 
 		try (Scanner scanner = new Scanner(file)) {
@@ -45,10 +44,10 @@ public class QueryHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result.toString();
-	  }
-	
+	}
+
 	// Test method
 	public static void main(String[] args) {
 		try {
