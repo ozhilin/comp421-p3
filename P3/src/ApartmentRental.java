@@ -29,7 +29,8 @@ public class ApartmentRental {
 		Connection conn = JDBCConnectionManager.getConnection(args[0], args[1]);
 		
 		allLodgingsExample();
-		createUserExample();
+//		createUserExample();
+		loginExample();
 		
 		System.out.println("Done");
 	}
@@ -64,6 +65,32 @@ public class ApartmentRental {
 			
 			UserManager um = new UserManager();
 			um.createUser(newUser);
+		}
+	}
+	
+	/*
+	 * 	Give an email and password and get a user instance 
+	 */
+	private static void loginExample() {
+		try (Scanner scanner = new Scanner(System.in)) {
+			System.out.println("Login");
+			
+			System.out.print("Enter your email: ");
+			String email = scanner.next();
+			
+			System.out.print("Enter your password: ");
+			String password = scanner.next();
+			
+			UserManager um = new UserManager();
+			User user = um.loginUser(email, password);
+			
+			if (user == null) {
+				System.out.println("Invalid login");
+				return;
+			}
+			
+			String birthday = user.birthdate != null ? user.birthdate.toString() : "not specified";
+			System.out.println(user.firstName + " " + user.lastName + ", birthday: " + birthday);
 		}
 	}
 }
