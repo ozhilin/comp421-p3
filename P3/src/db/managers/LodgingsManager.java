@@ -1,11 +1,15 @@
 package db.managers;
 
+import java.io.FileNotFoundException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.models.Lodging;
+import db.models.User;
 import db.util.QueryHelper;
 
 public class LodgingsManager extends AModelManager {
@@ -21,27 +25,43 @@ public class LodgingsManager extends AModelManager {
 			
 			Lodging l;
 			while (rs.next()) {
-				l = new Lodging();
-				
-				l.lid = rs.getInt("lid");
-				l.aid = rs.getInt("aid");
-				l.email = rs.getString("email");
-				l.name = rs.getString("name");
-				l.description = rs.getString("description");
-				l.lodgingType = rs.getString("lodging_type");
-				l.numGuests = rs.getInt("num_guests");
-				l.numBathrooms = rs.getInt("bathrooms");
-				l.numBedrooms = rs.getInt("bedrooms");
-				l.numBeds = rs.getInt("beds");
-				l.customPolicy = rs.getString("custom_policy");
-				l.dayPrice = rs.getDouble("day_price");
+				l = new Lodging(rs);
 				
 				result.add(l);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			System.out.println("all lodgings query file was not found");
 			e.printStackTrace();
 		}
 		
 		return result;
+	}
+	
+	public List<Lodging> getOwnedLodgings(User user) {
+		List<Lodging> result = new ArrayList<Lodging>();
+		
+		try {
+			String query = QueryHelper.findQuery("lodgings/ownedLodgingsQuery.sql");
+			
+			PreparedStatement stmnt = conn.prepareStatement(query);
+			stmnt.setString(1, user.email);
+			
+			ResultSet rs = stmnt.executeQuery(query);
+			
+			while (rs.next()) {
+				result.add(new Lodging(rs));
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+			
+		return null;
 	}
 }

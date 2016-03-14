@@ -1,6 +1,9 @@
 package db.models;
 
-import java.sql.Date;
+import java.util.Date;
+import java.sql.ResultSet;
+
+import db.util.QueryHelper;
 
 public class User {
   public String email;
@@ -10,4 +13,16 @@ public class User {
   public Date birthdate;
   public boolean isCustomer;
   public boolean isHost;
+  
+  public User() {}
+  
+  public User(ResultSet rs) {
+	  email = QueryHelper.readString(rs, "email");
+	  password = QueryHelper.readString(rs, "password");
+	  firstName = QueryHelper.readString(rs, "fname");
+	  lastName = QueryHelper.readString(rs, "nname");
+	  birthdate = QueryHelper.readDate(rs, "birthday");
+	  isCustomer = QueryHelper.readBoolean(rs, "is_customer");
+	  isHost = QueryHelper.readBoolean(rs, "is_host");
+  }
 }

@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Scanner;
 
 public class QueryHelper {
@@ -46,6 +49,34 @@ public class QueryHelper {
 		}
 
 		return result.toString();
+	}
+	
+	public static String readString(ResultSet rs, String colName) {
+		try {
+			return rs.getString(colName);
+		} catch (SQLException e) { }
+		return "";
+	}
+
+	public static Integer readInt(ResultSet rs, String colName) {
+		try {
+			return rs.getInt(colName);
+		} catch (SQLException e) { }
+		return null;
+	}
+
+	public static Date readDate(ResultSet rs, String colName) {
+		try {
+			return rs.getDate(colName);
+		} catch (SQLException e) { }
+		return null;
+	}
+
+	public static Boolean readBoolean(ResultSet rs, String colName) {
+		try {
+			return rs.getBoolean(colName);
+		} catch (SQLException e) { }
+		return null;
 	}
 
 	// Test method

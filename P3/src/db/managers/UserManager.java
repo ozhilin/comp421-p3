@@ -19,7 +19,7 @@ public class UserManager extends AModelManager {
 			pstmnt.setString(2, user.password);
 			pstmnt.setString(3, user.firstName);
 			pstmnt.setString(4, user.lastName);
-			pstmnt.setDate(5, user.birthdate);
+			pstmnt.setDate(5, new java.sql.Date(user.birthdate.getTime()));
 			pstmnt.setBoolean(6, user.isCustomer);
 			pstmnt.setBoolean(7, user.isHost);
 			
@@ -29,7 +29,6 @@ public class UserManager extends AModelManager {
 			System.out.println("Create query not found");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -45,20 +44,11 @@ public class UserManager extends AModelManager {
 			ResultSet rs = pstmnt.executeQuery();
 			rs.next();
 			
-			// Password not retrieved
-			User user = new User();
-			user.email = rs.getString("email");
-			user.firstName = rs.getString("fname");
-			user.lastName = rs.getString("lname");
-			user.birthdate = rs.getDate("birthday");
-			user.isCustomer = rs.getBoolean("is_customer");
-			user.isHost = rs.getBoolean("is_host");
-			
+			User user = new User(rs);
 			return user;
 		} catch (FileNotFoundException e) {
 			System.out.println("Login query not found");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -80,7 +70,7 @@ public class UserManager extends AModelManager {
 			
 			pstmnt.setString(1, user.firstName);
 			pstmnt.setString(2, user.lastName);
-			pstmnt.setDate(3, user.birthdate);
+			pstmnt.setDate(3, new java.sql.Date(user.birthdate.getTime()));
 			pstmnt.setBoolean(4, user.isCustomer);
 			pstmnt.setBoolean(5, user.isHost);
 			pstmnt.setString(6, user.email);
@@ -91,7 +81,6 @@ public class UserManager extends AModelManager {
 			System.out.println("Update query not found");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
