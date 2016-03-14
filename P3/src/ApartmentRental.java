@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import ui.ScreenRenderer;
+import ui.MainScreen;
 import db.JDBCConnectionManager;
 import db.managers.LodgingsManager;
 import db.managers.UserManager;
@@ -17,7 +17,7 @@ import db.models.User;
  * 
  * Dang Khoa Do - 260584925 
  * Yordan Neshev - 260587938 
- * Cécile Robert-Michon -
+ * Cecile Robert-Michon -
  * 260552816 Oleg Zhilin - 260581713
  * 
  * Main class for the apartment rental program.
@@ -36,11 +36,12 @@ public class ApartmentRental {
 		// Scanner needs to be passed around otherwise it closes system in
 		scanner = new Scanner(System.in); 
 
-		allLodgingsExample();
+		//allLodgingsExample();
 		// createUserExample();
-		User user = loginExample();
-		updateExample(user);
-
+		//User user = loginExample();
+		//updateExample(user);
+		MainScreen screen = new MainScreen();
+		screen.printOptions();
 		scanner.close();
 
 		System.out.println("Done");
