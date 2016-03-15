@@ -37,15 +37,14 @@ public class ApartmentRental {
 		// Scanner needs to be passed around otherwise it closes system in
 		scanner = new Scanner(System.in); 
 
-		User user = loginExample();
-		createLodgingExample(user);
-
+//		User user = loginExample();
+//		createLodgingExample(user);
 		//allLodgingsExample();
 		// createUserExample();
 		//User user = loginExample();
 		//updateExample(user);
-//		MainScreen screen = new MainScreen();
-//		screen.printOptions();
+		MainScreen screen = new MainScreen();
+		screen.printOptions();
 		scanner.close();
 
 		System.out.println("Done");
