@@ -9,6 +9,7 @@ import ui.MainScreen;
 import db.JDBCConnectionManager;
 import db.managers.LodgingsManager;
 import db.managers.UserManager;
+import db.models.Address;
 import db.models.Lodging;
 import db.models.User;
 
@@ -36,12 +37,15 @@ public class ApartmentRental {
 		// Scanner needs to be passed around otherwise it closes system in
 		scanner = new Scanner(System.in); 
 
+		User user = loginExample();
+		createLodgingExample(user);
+
 		//allLodgingsExample();
 		// createUserExample();
 		//User user = loginExample();
 		//updateExample(user);
-		MainScreen screen = new MainScreen();
-		screen.printOptions();
+//		MainScreen screen = new MainScreen();
+//		screen.printOptions();
 		scanner.close();
 
 		System.out.println("Done");
@@ -50,6 +54,36 @@ public class ApartmentRental {
 	/**
 	 * EXAMPLE USAGE YO
 	 */
+	private static void createLodgingExample(User user) {
+		Address a = new Address();
+		a.num = 123;
+		a.street = "McGill College";
+		a.city = "Montreal";
+		a.country = "Canada";
+		
+		Lodging l = new Lodging();
+		l.address = a;
+		l.email = user.email;
+		l.name = "A new lodging!";
+		
+		// Permission hack for example, don't actually do this.
+		boolean temp = user.isHost;
+		user.isHost = true;
+
+		LodgingsManager lm = new LodgingsManager();
+		int lid = lm.createNewLodging(l, user);
+		
+		Lodging l2 = lm.getLodgingByLid(lid);
+		
+		if (!l2.email.equals(l.email) || !l2.name.equals(l.name)) { 
+			System.out.println("Failed!"); 
+		} else {
+			System.out.println("Success!");
+		}
+		
+		user.isHost = temp;
+	}
+
 	private static void allLodgingsExample() {
 		LodgingsManager alq = new LodgingsManager();
 		List<Lodging> lodgings = alq.getAllLodgings();

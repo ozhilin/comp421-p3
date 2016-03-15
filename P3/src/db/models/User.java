@@ -4,6 +4,7 @@ import java.util.Date;
 import java.sql.ResultSet;
 
 import db.util.QueryHelper;
+import db.util.StringHelper;
 
 public class User {
   public String email;
@@ -24,5 +25,9 @@ public class User {
 	  birthdate = QueryHelper.readDate(rs, "birthday");
 	  isCustomer = QueryHelper.readBoolean(rs, "is_customer");
 	  isHost = QueryHelper.readBoolean(rs, "is_host");
+  }
+  
+  public boolean isLoggedIn() {
+	  return !StringHelper.IsNullOrEmpty(email);
   }
 }

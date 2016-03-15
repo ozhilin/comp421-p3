@@ -10,6 +10,7 @@ import db.util.QueryHelper;
 import db.util.StringHelper;
 
 public class UserManager extends AModelManager {
+	// No need to return the user id here since the user will have to login anyway
 	public void createUser(User user) {
 		try {
 			String insertQuery = QueryHelper.findQuery("users/createUser.sql");
@@ -19,10 +20,15 @@ public class UserManager extends AModelManager {
 			pstmnt.setString(2, user.password);
 			pstmnt.setString(3, user.firstName);
 			pstmnt.setString(4, user.lastName);
-			pstmnt.setDate(5, new java.sql.Date(user.birthdate.getTime()));
 			pstmnt.setBoolean(6, user.isCustomer);
 			pstmnt.setBoolean(7, user.isHost);
 			
+			if (user.birthdate != null) {
+				pstmnt.setDate(5, new java.sql.Date(user.birthdate.getTime()));
+			} else {
+			}
+			pstmnt.setNull(5, java.sql.Types.DATE);
+
 			pstmnt.executeUpdate();
 			conn.commit();
 		} catch (FileNotFoundException e) {

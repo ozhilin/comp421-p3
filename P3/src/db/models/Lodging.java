@@ -7,7 +7,7 @@ import db.util.QueryHelper;
 
 public class Lodging {
 	public int lid;
-	public int aid;
+	public Address address;
 	public String email;
 	public String name;
 	public String description;
@@ -23,7 +23,7 @@ public class Lodging {
 	
 	public Lodging(ResultSet rs) {
 		lid = QueryHelper.readInt(rs, "lid");
-		aid = QueryHelper.readInt(rs, "aid");
+		address = new Address(rs);
 		email = QueryHelper.readString(rs, "email");
 		name = QueryHelper.readString(rs, "name");
 		description = QueryHelper.readString(rs, "description");

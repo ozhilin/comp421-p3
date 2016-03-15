@@ -1,1 +1,2 @@
-SELECT * FROM Lodgings;
+SELECT * FROM Lodgings L, Address A
+WHERE L.aid = A.aid;
