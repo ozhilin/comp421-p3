@@ -65,6 +65,13 @@ public class QueryHelper {
 		return null;
 	}
 
+	public static Double readDouble(ResultSet rs, String colName) {
+		try {
+			return rs.getDouble(colName);
+		} catch (SQLException e) { }
+		return null;
+	}
+
 	public static Date readDate(ResultSet rs, String colName) {
 		try {
 			return rs.getDate(colName);
