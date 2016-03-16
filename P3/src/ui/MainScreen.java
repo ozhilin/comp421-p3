@@ -248,7 +248,7 @@ public class MainScreen {
 		List<Lodging> lodgings = alq.getAllLodgings();
 
 		for (Lodging l : lodgings) {
-			System.out.println(l.lid + ". " + l.name);
+			System.out.println(l.lid + ". " + l.name + " -- Rating: " + l.avgRating);
 		}
 		viewDetails();
 		// TODO View details about lodging
@@ -309,7 +309,7 @@ public class MainScreen {
 		System.out.println("Enter your comments:");
 		String text = scanner.next();
 		review.review = text;
-		review.review_date = new Date();
+		review.reviewDate = new Date();
 		backToMain();
 	}
 	

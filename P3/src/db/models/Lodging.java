@@ -18,6 +18,7 @@ public class Lodging {
 	public int numBeds;
 	public String customPolicy;
 	public double dayPrice;
+	public double avgRating;
 	
 	public Lodging() {}
 	
@@ -33,5 +34,6 @@ public class Lodging {
 		numBeds = QueryHelper.readInt(rs, "beds");
 		customPolicy = QueryHelper.readString(rs, "custom_policy");
 		dayPrice = QueryHelper.readInt(rs, "day_price");
+		avgRating = QueryHelper.readDouble(rs, "avg_rating");
 	}
 }
