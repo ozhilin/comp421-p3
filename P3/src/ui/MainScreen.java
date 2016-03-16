@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +13,10 @@ import java.util.Scanner;
 import db.JDBCConnectionManager;
 import db.managers.LodgingsManager;
 import db.managers.UserManager;
+import db.models.Address;
+import db.models.Booking;
 import db.models.Lodging;
+import db.models.Review;
 import db.models.User;
 
 public class MainScreen {
@@ -30,12 +34,13 @@ public class MainScreen {
 							+ mUser.firstName
 							+ ", what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit");
 		}
-		System.out.println("1 -> Browse apartments");
+		System.out.println("1 -> Browse Apartments");
 		System.out.println("2 -> Login");
 		System.out.println("3 -> Create Account");
 		System.out.println("4 -> Update User Account");
-		System.out.println("5 -> Book a lodging");
+		System.out.println("5 -> Book a Lodging");
 		System.out.println("6 -> Post a Review");
+		System.out.println("7 -> Add a Lodging");
 		System.out.println("q -> Quit");
 		String choice = scanner.next();
 		handleInput(choice);
@@ -62,10 +67,37 @@ public class MainScreen {
 			}
 			break;
 		case "5":
-			// TODO : add booking page
+			if (mUser != null) {
+				createBooking();
+			} else {
+				System.out
+						.println("You must be logged in to proceed, please login using choice 2");
+				printOptions();
+			}
 			break;
 		case "6":
-			// TODO : review
+			if (mUser != null) {
+				postReview();
+			} else {
+				System.out
+						.println("You must be logged in to proceed, please login using choice 2");
+				printOptions();
+			}
+			break;
+		case "7":
+			if (mUser != null) {
+				if (mUser.isHost != true) {
+					System.out
+					.println("You must be a host to add a lodging. Update your status in choice 4");
+			printOptions();
+				} else {
+					addLodging();
+				}
+			} else {
+				System.out
+						.println("You must be logged in to proceed, please login using choice 2");
+				printOptions();
+			}
 			break;
 		case "q":
 			quit();
@@ -93,7 +125,7 @@ public class MainScreen {
 
 		System.out.print("Enter a birthday: (yyyy-mm-dd) ");
 		String string = scanner.next();
-		newUser.birthdate = createBirthdate(string);
+		newUser.birthdate = createDate(string);
 
 		System.out.print("Are you a host? (y/n)");
 		String input = scanner.next();
@@ -113,6 +145,7 @@ public class MainScreen {
 
 		UserManager um = new UserManager();
 		um.createUser(newUser);
+		System.out.println("Successfully created your account!");
 		backToMain();
 	}
 
@@ -156,7 +189,7 @@ public class MainScreen {
 		case "3":
 			System.out.println("Enter a new birthdate: (yyyy-mm-dd) ");
 			String dateString = scanner.next();
-			user.birthdate = createBirthdate(dateString);
+			user.birthdate = createDate(dateString);
 			break;
 		case "4":
 			System.out.println("Enter a new host status: (y/n) ");
@@ -197,7 +230,7 @@ public class MainScreen {
 		}
 	}
 
-	private Date createBirthdate(String dateString) {
+	private Date createDate(String dateString) {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = formatter.parse(dateString);
@@ -261,6 +294,86 @@ public class MainScreen {
 
 				}
 			}
+	}
+	
+	private void postReview(){
+		System.out.println("Post a Review");
+		Review review = new Review();
+		review.email = mUser.email;
+		System.out.println("Enter your booking id:");
+		int bid = scanner.nextInt();
+		review.bid = bid;
+		System.out.println("Enter your star rating: (between 1 and 5)");
+		int rating = scanner.nextInt();
+		review.rating = rating;
+		System.out.println("Enter your comments:");
+		String text = scanner.next();
+		review.review = text;
+		review.review_date = new Date();
+		backToMain();
+	}
+	
+	private void createBooking() {
+		System.out.println("Book a Place");
+		Booking booking = new Booking();
+
+		System.out.println("Enter FROM date: (yyyy-mm-dd)");
+		String from = scanner.next();
+		Date fromDate = createDate(from);
+		booking.fromDate = fromDate;
+		System.out.println("Enter TO date:");
+		String to = scanner.next();
+		Date toDate = createDate(to);
+		booking.toDate = toDate;
+		
+		/*public int bid;
+		public int pid;
+		public Lodging lodging;
+		public Date fromDate;
+		public Date toDate;
+		public double totalPrice;*/
+		
+		
+		backToMain();
+	}
+	
+	private void addLodging(){
+		System.out.println("Add a lodging");
+		
+		Address a = new Address();
+		System.out.println("Enter an address");
+		System.out.print("Street Number: ");
+		String input = scanner.next();
+		a.num = Integer.getInteger(input);
+		System.out.print("Street Name: ");
+		input = scanner.next();
+		a.street = input;
+		System.out.print("City: ");
+		input = scanner.next();
+		a.city = input;
+		System.out.print("Country: ");
+		input = scanner.next();
+		a.country = input;
+		
+		Lodging l = new Lodging();
+		l.address = a;
+		l.email = mUser.email;
+		
+		System.out.println("Please enter a lodging name:");
+		input = scanner.next();
+		l.name = input;
+
+		LodgingsManager lm = new LodgingsManager();
+		int lid = lm.createNewLodging(l, mUser);
+		
+		Lodging l2 = lm.getLodgingByLid(lid);
+		
+		if (!l2.email.equals(l.email) || !l2.name.equals(l.name)) { 
+			System.out.println("Failed creating a lodging"); 
+		} else {
+			System.out.println("Successfully added your lodging!");
+		}
+		backToMain();
 	}
 	
 	private void backToMain() {

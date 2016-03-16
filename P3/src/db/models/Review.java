@@ -7,7 +7,7 @@ public class Review {
 	public String email;
 	public int bid;
 	public Date review_date;
-	public Date review;
+	public String review;
 	public int rating;
 	
 	public Review() {}
