@@ -76,10 +76,15 @@ public class UserManager extends AModelManager {
 			
 			pstmnt.setString(1, user.firstName);
 			pstmnt.setString(2, user.lastName);
-			pstmnt.setDate(3, new java.sql.Date(user.birthdate.getTime()));
 			pstmnt.setBoolean(4, user.isCustomer);
 			pstmnt.setBoolean(5, user.isHost);
 			pstmnt.setString(6, user.email);
+			
+			if (user.birthdate != null) {
+				pstmnt.setDate(3, new java.sql.Date(user.birthdate.getTime()));
+			} else {
+				pstmnt.setNull(3, java.sql.Types.DATE);
+			}
 			
 			pstmnt.executeUpdate();
 			conn.commit();

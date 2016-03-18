@@ -40,6 +40,7 @@ public class ReviewManager extends AModelManager {
 			System.out.println("Could not find createReview query");
 		}
 	}
+
 	public List<Review> getReviewByLid(int lid) {
 		List<Review> result = new ArrayList<Review>();
 		

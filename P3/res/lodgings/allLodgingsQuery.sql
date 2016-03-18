@@ -1,4 +1,3 @@
--- TODO Consider making this a view.
 SELECT * 
 FROM Lodgings L, Address A, 
   (SELECT lid, AVG(rating) as avg_rating
