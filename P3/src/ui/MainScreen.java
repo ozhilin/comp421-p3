@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 
 import db.JDBCConnectionManager;
 import db.managers.LodgingsManager;
+import db.managers.ReviewManager;
 import db.managers.UserManager;
 import db.models.Address;
 import db.models.Booking;
@@ -272,9 +274,20 @@ public class MainScreen {
 					String getLodgingDescriptionSQL = "SELECT description FROM lodgings WHERE lid = " + lodgingNum;
 					ResultSet rs = stmnt.executeQuery(getLodgingDescriptionSQL);
 					
+					
+					// TODO : add reviews
+					
 					if (rs.next()) {
 						String description = rs.getString("description");
+						List<Review> reviews = new ArrayList<Review>();
+						ReviewManager rm = new ReviewManager();
+						reviews = rm.getReviewByLid(lodgingNum);
 						System.out.println(description);
+						System.out.println("");
+						System.out.println("Reviews:");
+						for(Review r : reviews) {
+							System.out.println(r.review);
+						}
 					} else {
 						System.out.println("Lodging was not found!");
 					}
@@ -310,6 +323,15 @@ public class MainScreen {
 		String text = scanner.next();
 		review.review = text;
 		review.reviewDate = new Date();
+		ReviewManager rm = new ReviewManager();
+		rm.createNewReview(review, bid, mUser);
+		/*Review r = rm.getReviewByBid(bid);
+		
+		if (!r.email.equals(mUser.email) || !r.rating != rating)) { 
+			System.out.println("Failed posting the review"); 
+		} else {
+			System.out.println("Successfully posted your review!");
+		}*/
 		backToMain();
 	}
 	
