@@ -11,7 +11,11 @@ import db.models.User;
 import db.util.QueryHelper;
 
 public class CreditCardManager extends AModelManager {
-	public int createNewReview(CreditCard creditCard, User user) {
+	public int createNewCreditCard(CreditCard creditCard, User user) {
+		return createNewCreditCard(creditCard, user, true);
+	}
+	
+	public int createNewCreditCard(CreditCard creditCard, User user, boolean shouldCommit) {
 		// Only a host can create
 		if (!user.isLoggedIn()) {
 			return -1;
@@ -30,7 +34,7 @@ public class CreditCardManager extends AModelManager {
 			rs.next();
 			aid = rs.getInt("aid");
 		} catch (SQLException e1) {
-			System.out.println("Something went wrong when trying to create the address.");
+			System.out.println("Something went wrong when trying to create the address when creating the payment.");
 		}
 		
 		if (aid == -1) return -1;
@@ -53,7 +57,9 @@ public class CreditCardManager extends AModelManager {
 			createPaymentAccountStmnt.executeQuery();
 			createCreditCardStmnt.executeQuery();
 
-			conn.commit();
+			if (shouldCommit) {
+				conn.commit();
+			}
 			
 			ResultSet ccRS = createCreditCardStmnt.getGeneratedKeys();
 			ccRS.next();

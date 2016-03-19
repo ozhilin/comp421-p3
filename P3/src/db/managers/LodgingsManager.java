@@ -117,7 +117,7 @@ public class LodgingsManager extends AModelManager {
 			PreparedStatement stmnt = conn.prepareStatement(query);
 			stmnt.setString(1, user.email);
 			
-			ResultSet rs = stmnt.executeQuery(query);
+			ResultSet rs = stmnt.executeQuery();
 			
 			while (rs.next()) {
 				result.add(new Lodging(rs));

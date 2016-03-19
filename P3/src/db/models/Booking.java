@@ -8,7 +8,7 @@ import db.util.QueryHelper;
 
 public class Booking {
 	public int bid;
-	public int pid;
+	public CreditCard creditCard;
 	public Lodging lodging;
 	public Date fromDate;
 	public Date toDate;
@@ -29,7 +29,7 @@ public class Booking {
 	
 	public Booking(ResultSet rs) {
 		bid = QueryHelper.readInt(rs, "bid");
-		pid = QueryHelper.readInt(rs, "pid");
+		creditCard = new CreditCard(rs);
 		lodging = new Lodging(rs);
 		fromDate = QueryHelper.readDate(rs, "from_date");
 		toDate = QueryHelper.readDate(rs, "to_date");

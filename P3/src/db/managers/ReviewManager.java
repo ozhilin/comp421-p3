@@ -50,7 +50,7 @@ public class ReviewManager extends AModelManager {
 			PreparedStatement stmnt = conn.prepareStatement(query);
 			stmnt.setInt(1, lid);
 			
-			ResultSet rs = stmnt.executeQuery(query);
+			ResultSet rs = stmnt.executeQuery();
 			
 			while (rs.next()) {
 				result.add(new Review(rs));
@@ -75,7 +75,7 @@ public class ReviewManager extends AModelManager {
 			PreparedStatement stmnt = conn.prepareStatement(query);
 			stmnt.setInt(1, pid);
 			
-			ResultSet rs = stmnt.executeQuery(query);
+			ResultSet rs = stmnt.executeQuery();
 			
 			while (rs.next()) {
 				result.add(new Review(rs));

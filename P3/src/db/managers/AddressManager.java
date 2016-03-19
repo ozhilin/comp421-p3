@@ -65,11 +65,9 @@ public class AddressManager extends AModelManager {
 			
 			return stmnt;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Could not find the create Address query");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Could not create the address");
 		}
 		
 		return null;

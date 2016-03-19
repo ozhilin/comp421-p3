@@ -18,6 +18,7 @@ import db.managers.ReviewManager;
 import db.managers.UserManager;
 import db.models.Address;
 import db.models.Booking;
+import db.models.CreditCard;
 import db.models.Lodging;
 import db.models.Review;
 import db.models.User;
@@ -365,7 +366,9 @@ public class MainScreen {
 		if (pid.equalsIgnoreCase("new")){
 			// create payment
 		} else {
-			booking.pid = Integer.parseInt(pid);
+			CreditCard cc = new CreditCard();
+			cc.pid = pid;
+			booking.creditCard = cc;
 		}
 		
 		// calculate price
