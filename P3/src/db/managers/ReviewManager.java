@@ -45,10 +45,35 @@ public class ReviewManager extends AModelManager {
 		List<Review> result = new ArrayList<Review>();
 		
 		try {
-			String query = QueryHelper.findQuery("lodgings/getReviewsByLid.sql");
+			String query = QueryHelper.findQuery("reviews/getReviewsByLid.sql");
 			
 			PreparedStatement stmnt = conn.prepareStatement(query);
 			stmnt.setInt(1, lid);
+			
+			ResultSet rs = stmnt.executeQuery(query);
+			
+			while (rs.next()) {
+				result.add(new Review(rs));
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+			
+		return null;
+	}
+	
+	public List<Review> getReviewByPid(int pid) {
+		List<Review> result = new ArrayList<Review>();
+		
+		try {
+			String query = QueryHelper.findQuery("reviews/getReviewsByPid.sql");
+			
+			PreparedStatement stmnt = conn.prepareStatement(query);
+			stmnt.setInt(1, pid);
 			
 			ResultSet rs = stmnt.executeQuery(query);
 			

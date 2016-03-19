@@ -17,18 +17,31 @@ public class BookingManager extends AModelManager {
 		}
 		
 		AddressManager am = new AddressManager();
-		int addressId = am.createAddress(booking.lodging.address);
+		PreparedStatement createAddressStmnt = am.createAddressStatement(booking.lodging.address);
 		
-		if (addressId == -1) { return -1; }
-
+		if (createAddressStmnt == null) return -1;
+		
+		int aid = -1;
+		
 		try {
-			String query = QueryHelper.findQuery("lodgings/createBooking.sql");
+			createAddressStmnt.executeQuery();
+			ResultSet rs = createAddressStmnt.getGeneratedKeys();
+			rs.next();
+			aid = rs.getInt("aid");
+		} catch (SQLException e1) {
+			System.out.println("Somethig went wrong when trying to create the address.");
+		}
+
+		if (aid == -1) return -1;
+		
+		try {
+			String query = QueryHelper.findQuery("bookings/createBooking.sql");
 			PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			stmnt.setInt(1, booking.pid);
 			stmnt.setInt(2, booking.lodging.lid);
-			stmnt.setDate(3, new java.sql.Date(booking.fromDate.getTime()));
-			stmnt.setDate(4, new java.sql.Date(booking.toDate.getTime()));
+			stmnt.setDate(3, new java.sql.Date(booking.fromDate.getTime())); // From date MUST be specified
+			stmnt.setDate(4, new java.sql.Date(booking.toDate.getTime())); // From date MUST be specified
 			stmnt.setDouble(5, booking.totalPrice);
 			
 			stmnt.executeUpdate();
