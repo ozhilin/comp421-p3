@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import db.JDBCConnectionManager;
+import db.managers.BookingManager;
 import db.managers.LodgingsManager;
 import db.managers.ReviewManager;
 import db.managers.UserManager;
@@ -40,7 +41,7 @@ public class MainScreen {
 		System.out.println("2 -> Login");
 		System.out.println("3 -> Create Account");
 		System.out.println("4 -> Update User Account");
-		System.out.println("5 -> Book a Lodging");
+		System.out.println("5 -> Book a Lodging");  // todo payments
 		System.out.println("6 -> Post a Review");
 		System.out.println("7 -> Add a Lodging");
 		System.out.println("q -> Quit");
@@ -339,6 +340,16 @@ public class MainScreen {
 		System.out.println("Book a Place");
 		Booking booking = new Booking();
 
+		LodgingsManager alq = new LodgingsManager();
+		List<Lodging> lodgings = alq.getAllLodgings();
+
+		for (Lodging l : lodgings) {
+			System.out.println(l.lid + ". " + l.name);
+		}
+		System.out.println("Enter the number of the booking you would like to book: ");
+		int lid = scanner.nextInt();
+		Lodging l = alq.getLodgingByLid(lid);
+		booking.lodging = l;
 		System.out.println("Enter FROM date: (yyyy-mm-dd)");
 		String from = scanner.next();
 		Date fromDate = createDate(from);
@@ -347,15 +358,24 @@ public class MainScreen {
 		String to = scanner.next();
 		Date toDate = createDate(to);
 		booking.toDate = toDate;
+		System.out.println("Enter your payment id:");
+		// PRINT ALL PAYMENT IDs
+		System.out.println("Alternatively, to add a new payment method, enter 'new'");
+		String pid = scanner.next();
+		if (pid.equalsIgnoreCase("new")){
+			// create payment
+		} else {
+			booking.pid = Integer.parseInt(pid);
+		}
 		
-		/*public int bid;
-		public int pid;
-		public Lodging lodging;
-		public Date fromDate;
-		public Date toDate;
-		public double totalPrice;*/
+		// calculate price
+		int days = (int)( (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+		double price = days * l.dayPrice;
+		booking.totalPrice = price;
 		
-		
+		BookingManager bm = new BookingManager();
+		int bid = bm.createBooking(booking, mUser);
+		System.out.println("Successfully booked your stay! Your booking ID is : " + bid + " . Please store this number in a safe place.");
 		backToMain();
 	}
 	
