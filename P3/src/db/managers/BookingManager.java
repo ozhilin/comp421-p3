@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.models.Booking;
+import db.models.Lodging;
 import db.models.User;
 import db.util.QueryHelper;
 
@@ -58,5 +61,30 @@ public class BookingManager extends AModelManager {
 		}
 		
 		return -1;
+	}
+	
+	public List<Booking> viewUserBookings(User user) {
+		List<Booking> result = new ArrayList<Booking>();
+		
+		try {
+			String query = QueryHelper.findQuery("bookings/bookingsByUser.sql");
+			
+			PreparedStatement stmnt = conn.prepareStatement(query);
+			stmnt.setString(1, user.email);
+			
+			ResultSet rs = stmnt.executeQuery(query);
+			
+			while (rs.next()) {
+				result.add(new Booking(rs));
+			}
+			
+			return result;
+		} catch (SQLException e) {
+			System.out.println("View user bookings failed");
+		} catch (FileNotFoundException e) {
+			System.out.println("bookingByUser query was not found");
+		}
+			
+		return null;
 	}
 }
