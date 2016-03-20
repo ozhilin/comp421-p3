@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import db.models.CreditCard;
 import db.models.User;
@@ -78,8 +78,8 @@ public class CreditCardManager extends AModelManager {
 		return -1;
 	}
 
-	public List<CreditCard> getPaymentsByUser(User user) {
-		List<CreditCard> result = new ArrayList<CreditCard>();
+	public Map<String, CreditCard> getPaymentsByUser(User user) {
+		Map<String, CreditCard> result = new HashMap<String, CreditCard>();
 
 		try {
 			String query = QueryHelper.findQuery("creditCard/getCreditCardByUser.sql");
@@ -90,7 +90,7 @@ public class CreditCardManager extends AModelManager {
 			ResultSet rs = stmnt.executeQuery();
 			
 			while(rs.next()) {
-				result.add(new CreditCard(rs));
+				result.put(rs.getString("pid"), new CreditCard(rs));
 			}
 		} catch (SQLException e) {
 			System.out.println("Get lodgings by id failed");
