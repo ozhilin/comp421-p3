@@ -132,7 +132,7 @@ public class MainScreen {
 		String string = scanner.nextLine();
 		newUser.birthdate = createDate(string);
 
-		System.out.print("Are you a host? (y/n)");
+		System.out.print("Are you a host? (y/n) ");
 		String input = scanner.nextLine();
 		if (input.equalsIgnoreCase("y")) {
 			newUser.isHost = true;
@@ -140,7 +140,7 @@ public class MainScreen {
 			newUser.isHost = false;
 		}
 
-		System.out.print("Are you a customer? (y/n)");
+		System.out.print("Are you a customer? (y/n) ");
 		input = scanner.nextLine();
 		if (input.equalsIgnoreCase("y")) {
 			newUser.isCustomer = true;
@@ -149,9 +149,17 @@ public class MainScreen {
 		}
 
 		UserManager um = new UserManager();
-		um.createUser(newUser);
-		System.out.println("Successfully created your account!");
-		backToMain();
+		
+		try {
+			um.createUser(newUser);
+			mUser = um.loginUser(newUser.email, newUser.password);
+			System.out.println("Successfully created your account!");
+			System.out.println("Welcome " + mUser.firstName + "!");
+			backToMain();
+		} catch (NullPointerException e) {
+			System.out.println("Invalid login");
+			backToMain();
+		}
 	}
 
 	private void login() {
@@ -280,8 +288,6 @@ public class MainScreen {
 						+ lodgingNum;
 				ResultSet rs = stmnt.executeQuery(getLodgingDescriptionSQL);
 
-				// TODO : add reviews
-
 				if (rs.next()) {
 					String description = rs.getString("description");
 					List<Review> reviews = new ArrayList<Review>();
@@ -334,13 +340,10 @@ public class MainScreen {
 		review.reviewDate = new Date();
 		ReviewManager rm = new ReviewManager();
 		rm.createNewReview(review, bid, mUser);
-		/*
-		 * Review r = rm.getReviewByBid(bid);
-		 * 
-		 * if (!r.email.equals(mUser.email) || !r.rating != rating)) {
-		 * System.out.println("Failed posting the review"); } else {
-		 * System.out.println("Successfully posted your review!"); }
-		 */
+		Review r = rm.getReviewByBid(bid); 
+		if (!r.email.equals(mUser.email) || (r.rating != rating)) {
+		System.out.println("Failed posting the review"); } else {
+		System.out.println("Successfully posted your review!"); }
 		backToMain();
 	}
 
@@ -372,10 +375,10 @@ public class MainScreen {
 		Map<String, CreditCard> cards = ccm.getPaymentsByUser(mUser);
 
 		for (CreditCard c : cards.values()) {
-			System.out.println(c.pid + ". " + c.name + ", expires on "
+			System.out.println(c.name + ", " + c.pid + ", expires on "
 					+ c.expirationDate);
 		}
-		System.out.println("Enter your payment id:");
+		System.out.println("Enter your credit card number from saved payments:");
 		System.out
 				.println("Alternatively, to add a new payment method, enter 'new'");
 		String pid = scanner.nextLine();
@@ -383,6 +386,9 @@ public class MainScreen {
 			// create payment
 			CreditCard cc = new CreditCard();
 			cc.email = mUser.email;
+			System.out.println("Enter your credit card number:");
+			String cnumber = scanner.nextLine();
+			cc.pid = cnumber;
 			System.out.println("Enter your payment's name:");
 			String cname = scanner.nextLine();
 			cc.name = cname;
@@ -394,6 +400,13 @@ public class MainScreen {
 			Date expiration = createDate(date);
 			cc.expirationDate = expiration;
 			String pid2 = ccm.createNewCreditCard(cc, mUser);
+			if (pid2.equals("")) {
+				System.out.println("Something went wrong when adding your credit card. Please make sure all input values are valid and try again.");
+				backToMain();
+				return;
+			} else {
+				System.out.println("Successfully added your card!");
+			}
 			booking.creditCard = cc;
 		} else {
 			CreditCard cc = cards.get(pid);
@@ -406,9 +419,13 @@ public class MainScreen {
 
 		BookingManager bm = new BookingManager();
 		int bid = bm.createBooking(booking, mUser);
+		if (bid < 0) {
+			System.out.println("Something went wrong when creating your booking. Please make sure all input values are valid and try again.");
+		} else {
 		System.out
 				.println("Successfully booked your stay! Your booking ID is : "
 						+ bid + " . Please store this number in a safe place.");
+		}
 		backToMain();
 	}
 
@@ -466,7 +483,7 @@ public class MainScreen {
 		Lodging l2 = lm.getLodgingByLid(lid);
 
 		if (!l2.email.equals(l.email) || !l2.name.equals(l.name)) {
-			System.out.println("Failed creating a lodging");
+			System.out.println("Failed creating a lodging. Please make sure all input values are valid and try again.");
 		} else {
 			System.out.println("Successfully added your lodging!");
 		}

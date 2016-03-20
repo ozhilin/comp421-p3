@@ -66,19 +66,19 @@ public class ReviewManager extends AModelManager {
 		return null;
 	}
 	
-	public List<Review> getReviewByPid(int pid) {
-		List<Review> result = new ArrayList<Review>();
+	public Review getReviewByBid(int bid) {
+		Review result = new Review();
 		
 		try {
-			String query = QueryHelper.findQuery("reviews/getReviewsByPid.sql");
+			String query = QueryHelper.findQuery("reviews/getReviewsByBid.sql");
 			
 			PreparedStatement stmnt = conn.prepareStatement(query);
-			stmnt.setInt(1, pid);
+			stmnt.setInt(1, bid);
 			
 			ResultSet rs = stmnt.executeQuery();
 			
 			while (rs.next()) {
-				result.add(new Review(rs));
+				result = new Review(rs);
 			}
 			
 			return result;
