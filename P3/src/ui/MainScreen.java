@@ -440,10 +440,11 @@ public class MainScreen {
 	private Address inputAddress() {
 		Address a = new Address();
 		System.out.print("Street Number: ");
-		int number = scanner.nextInt();
+		String input = scanner.nextLine();
+		int number = Integer.parseInt(input);
 		a.num = number;
 		System.out.print("Street Name: ");
-		String input = scanner.nextLine();
+		input = scanner.nextLine();
 		a.street = input;
 		System.out.print("City: ");
 		input = scanner.nextLine();
