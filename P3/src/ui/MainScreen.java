@@ -413,6 +413,21 @@ public class MainScreen {
 	}
 
 	private void addLodging() {
+		
+		/* public int lid;
+		public Address address;
+		public String email;
+		public String name;
+		public String description;
+		public String lodgingType;
+		public int numGuests;
+		public int numBathrooms;
+		public int numBedrooms;
+		public int numBeds;
+		public String customPolicy;
+		public double dayPrice;
+		public double avgRating;*/
+		
 		System.out.println("Add a lodging");
 
 		String input;
