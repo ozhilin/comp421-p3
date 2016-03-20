@@ -61,7 +61,7 @@ public class CreditCardManager extends AModelManager {
 
 			createCreditCardStmnt.setString(1, creditCard.pid);
 			createCreditCardStmnt.setInt(2, aid);
-			createCreditCardStmnt.setDate(2, new java.sql.Date(creditCard.expirationDate.getTime())); // Date CANNOT be null here
+			createCreditCardStmnt.setDate(3, new java.sql.Date(creditCard.expirationDate.getTime())); // Date CANNOT be null here
 			
 			createCreditCardStmnt.executeUpdate();
 
