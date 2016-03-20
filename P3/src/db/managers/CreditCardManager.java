@@ -13,20 +13,20 @@ import db.models.User;
 import db.util.QueryHelper;
 
 public class CreditCardManager extends AModelManager {
-	public int createNewCreditCard(CreditCard creditCard, User user) {
+	public String createNewCreditCard(CreditCard creditCard, User user) {
 		return createNewCreditCard(creditCard, user, true);
 	}
 	
-	public int createNewCreditCard(CreditCard creditCard, User user, boolean shouldCommit) {
+	public String createNewCreditCard(CreditCard creditCard, User user, boolean shouldCommit) {
 		// Only a host can create
 		if (!user.isLoggedIn()) {
-			return -1;
+			return "";
 		}
 			
 		AddressManager am = new AddressManager();
 		PreparedStatement createAddressStmnt = am.createAddressStatement(creditCard.address);
 		
-		if (createAddressStmnt == null) return -1;
+		if (createAddressStmnt == null) return "";
 		
 		int aid = -1;
 		
@@ -39,7 +39,7 @@ public class CreditCardManager extends AModelManager {
 			System.out.println("Something went wrong when trying to create the address when creating the payment.");
 		}
 		
-		if (aid == -1) return -1;
+		if (aid == -1) return "";
 		
 		try {
 			String createPaymentAccountCommand = QueryHelper.findQuery("creditCard/createPaymentAccount.sql");
@@ -65,7 +65,7 @@ public class CreditCardManager extends AModelManager {
 			
 			ResultSet ccRS = createCreditCardStmnt.getGeneratedKeys();
 			ccRS.next();
-			int pid = ccRS.getInt("pid");
+			String pid = ccRS.getString("pid");
 			
 			return pid;
 		} catch (SQLException e) {
@@ -75,7 +75,7 @@ public class CreditCardManager extends AModelManager {
 			System.out.println("Could not find createCreditCard query");
 		}
 		
-		return -1;
+		return "";
 	}
 
 	public Map<String, CreditCard> getPaymentsByUser(User user) {

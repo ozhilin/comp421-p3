@@ -38,15 +38,15 @@ public class BookingManager extends AModelManager {
 		if (aid == -1) return -1;
 		
 		CreditCardManager ccm = new CreditCardManager();
-		int pid = ccm.createNewCreditCard(booking.creditCard, user, false); // No need to commit the transaction.
+		String pid = ccm.createNewCreditCard(booking.creditCard, user, false); // No need to commit the transaction.
 		
-		if (pid == -1) return -1;
+		if (pid == "") return -1;
 		
 		try {
 			String query = QueryHelper.findQuery("bookings/createBooking.sql");
 			PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
-			stmnt.setInt(1, pid);
+			stmnt.setString(1, pid);
 			stmnt.setInt(2, booking.lodging.lid);
 			stmnt.setDate(3, new java.sql.Date(booking.fromDate.getTime())); // From date MUST be specified
 			stmnt.setDate(4, new java.sql.Date(booking.toDate.getTime())); // From date MUST be specified
