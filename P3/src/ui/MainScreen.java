@@ -355,7 +355,7 @@ public class MainScreen {
 			System.out.println(l.lid + ". " + l.name);
 		}
 		System.out
-				.println("Enter the number of the booking you would like to book: ");
+				.println("Enter the number of the lodging you would like to book: ");
 		String lidString = scanner.nextLine();
 		int lid = Integer.parseInt(lidString);
 		Lodging l = alq.getLodgingByLid(lid);
@@ -386,7 +386,7 @@ public class MainScreen {
 			System.out.println("Enter your payment's name:");
 			String cname = scanner.nextLine();
 			cc.name = cname;
-			System.out.println("Enter your billing address:");
+			System.out.println("Enter your billing address");
 			Address a = inputAddress();
 			cc.address = a;
 			System.out.println("Enter an expiration date: (yyyy-mm-dd)");
@@ -417,7 +417,7 @@ public class MainScreen {
 		System.out.println("Add a lodging");
 
 		String input;
-		System.out.println("Enter an address:");
+		System.out.println("Enter an address");
 		Address a = inputAddress();
 
 		Lodging l = new Lodging();
