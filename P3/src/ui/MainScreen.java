@@ -414,20 +414,6 @@ public class MainScreen {
 
 	private void addLodging() {
 		
-		/* public int lid;
-		public Address address;
-		public String email;
-		public String name;
-		public String description;
-		public String lodgingType;
-		public int numGuests;
-		public int numBathrooms;
-		public int numBedrooms;
-		public int numBeds;
-		public String customPolicy;
-		public double dayPrice;
-		public double avgRating;*/
-		
 		System.out.println("Add a lodging");
 
 		String input;
@@ -441,7 +427,39 @@ public class MainScreen {
 		System.out.println("Please enter a lodging name:");
 		input = scanner.nextLine();
 		l.name = input;
-
+		
+		System.out.println("Please enter a description: (0-300 characters)");
+		input = scanner.nextLine();
+		l.description = input;
+		
+		System.out.println("Please enter a lodging type: (apartment, house, condo...)");
+		input = scanner.nextLine();
+		l.lodgingType = input;
+		
+		System.out.println("Maximum capacity?");
+		input = scanner.nextLine();
+		l.numGuests = Integer.parseInt(input);
+		
+		System.out.println("Number of bathrooms?");
+		input = scanner.nextLine();
+		l.numBathrooms = Integer.parseInt(input);
+		
+		System.out.println("Number of bedrooms?");
+		input = scanner.nextLine();
+		l.numBedrooms = Integer.parseInt(input);
+		
+		System.out.println("Number of beds?");
+		input = scanner.nextLine();
+		l.numBeds = Integer.parseInt(input);
+		
+		System.out.println("Custom policy?");
+		input = scanner.nextLine();
+		l.customPolicy = input;
+		
+		System.out.println("price/day?");
+		input = scanner.nextLine();
+		l.dayPrice = Double.parseDouble(input);
+		
 		LodgingsManager lm = new LodgingsManager();
 		int lid = lm.createNewLodging(l, mUser);
 
