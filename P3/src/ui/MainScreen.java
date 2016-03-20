@@ -43,7 +43,7 @@ public class MainScreen {
 		System.out.println("2 -> Login");
 		System.out.println("3 -> Create Account");
 		System.out.println("4 -> Update User Account");
-		System.out.println("5 -> Book a Lodging"); // todo payments
+		System.out.println("5 -> Book a Lodging");
 		System.out.println("6 -> Post a Review");
 		System.out.println("7 -> Add a Lodging");
 		System.out.println("q -> Quit");
@@ -242,7 +242,7 @@ public class MainScreen {
 			return date;
 
 		} catch (ParseException e) {
-			System.out.println("Invalid birthdate");
+			System.out.println("Invalid date");
 		}
 		return null;
 	}
@@ -321,10 +321,12 @@ public class MainScreen {
 		Review review = new Review();
 		review.email = mUser.email;
 		System.out.println("Enter your booking id:");
-		int bid = scanner.nextInt();
+		String bidString = scanner.nextLine();
+		int bid = Integer.parseInt(bidString);
 		review.bid = bid;
 		System.out.println("Enter your star rating: (between 1 and 5)");
-		int rating = scanner.nextInt();
+		String ratingS = scanner.nextLine();
+		int rating = Integer.parseInt(ratingS);
 		review.rating = rating;
 		System.out.println("Enter your comments:");
 		String text = scanner.nextLine();
@@ -354,7 +356,8 @@ public class MainScreen {
 		}
 		System.out
 				.println("Enter the number of the booking you would like to book: ");
-		int lid = scanner.nextInt();
+		String lidString = scanner.nextLine();
+		int lid = Integer.parseInt(lidString);
 		Lodging l = alq.getLodgingByLid(lid);
 		booking.lodging = l;
 		System.out.println("Enter FROM date: (yyyy-mm-dd)");
@@ -386,7 +389,7 @@ public class MainScreen {
 			System.out.println("Enter your billing address:");
 			Address a = inputAddress();
 			cc.address = a;
-			System.out.println("Enter an expiration date: (yyyy-mm-dd");
+			System.out.println("Enter an expiration date: (yyyy-mm-dd)");
 			String date = scanner.nextLine();
 			Date expiration = createDate(date);
 			cc.expirationDate = expiration;
