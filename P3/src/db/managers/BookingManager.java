@@ -32,7 +32,7 @@ public class BookingManager extends AModelManager {
 			rs.next();
 			aid = rs.getInt("aid");
 		} catch (SQLException e1) {
-			System.out.println("Somethig went wrong when trying to create the address.");
+			System.out.println("Something went wrong when trying to create the address.");
 		}
 
 		if (aid == -1) return -1;

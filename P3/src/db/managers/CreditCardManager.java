@@ -31,12 +31,14 @@ public class CreditCardManager extends AModelManager {
 		int aid = -1;
 		
 		try {
-			createAddressStmnt.executeQuery();
+			createAddressStmnt.executeUpdate();
+
 			ResultSet rs = createAddressStmnt.getGeneratedKeys();
 			rs.next();
 			aid = rs.getInt("aid");
 		} catch (SQLException e1) {
 			System.out.println("Something went wrong when trying to create the address when creating the payment.");
+			e1.printStackTrace();
 		}
 		
 		if (aid == -1) return "";
@@ -48,6 +50,11 @@ public class CreditCardManager extends AModelManager {
 			createPaymentAccountStmnt.setString(1, creditCard.pid);
 			createPaymentAccountStmnt.setString(2, creditCard.email);
 			createPaymentAccountStmnt.setString(3, creditCard.name);
+			createPaymentAccountStmnt.executeUpdate();
+			
+			ResultSet cpRS = createPaymentAccountStmnt.getGeneratedKeys();
+			cpRS.next();
+			String pid = cpRS.getString("pid");
 			
 			String createCreditCardCommand = QueryHelper.findQuery("creditCard/createCreditCard.sql");
 			PreparedStatement createCreditCardStmnt = conn.prepareStatement(createCreditCardCommand, Statement.RETURN_GENERATED_KEYS);
@@ -56,16 +63,11 @@ public class CreditCardManager extends AModelManager {
 			createCreditCardStmnt.setInt(2, aid);
 			createCreditCardStmnt.setDate(2, new java.sql.Date(creditCard.expirationDate.getTime())); // Date CANNOT be null here
 			
-			createPaymentAccountStmnt.executeQuery();
-			createCreditCardStmnt.executeQuery();
+			createCreditCardStmnt.executeUpdate();
 
 			if (shouldCommit) {
 				conn.commit();
 			}
-			
-			ResultSet ccRS = createCreditCardStmnt.getGeneratedKeys();
-			ccRS.next();
-			String pid = ccRS.getString("pid");
 			
 			return pid;
 		} catch (SQLException e) {
