@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import db.models.CreditCard;
 import db.models.User;
@@ -76,8 +78,8 @@ public class CreditCardManager extends AModelManager {
 		return -1;
 	}
 
-	public CreditCard getPaymentsByUser(User user) {
-		CreditCard result = null;
+	public List<CreditCard> getPaymentsByUser(User user) {
+		List<CreditCard> result = new ArrayList<CreditCard>();
 
 		try {
 			String query = QueryHelper.findQuery("creditCard/getCreditCardByUser.sql");
@@ -87,9 +89,9 @@ public class CreditCardManager extends AModelManager {
 
 			ResultSet rs = stmnt.executeQuery();
 			
-			rs.next();
-			
-			return new CreditCard(rs);
+			while(rs.next()) {
+				result.add(new CreditCard(rs));
+			}
 		} catch (SQLException e) {
 			System.out.println("Get lodgings by id failed");
 			e.printStackTrace();
