@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import db.models.User;
 import db.util.QueryHelper;
+import db.util.StringHelper;
 
 public class UserManager extends AModelManager {
 
@@ -40,7 +41,11 @@ public class UserManager extends AModelManager {
 
 			pstmnt.executeUpdate();
 			conn.commit();
-		} catch (SQLException e) { }
+		} catch (SQLException e) { 
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
+		}
 	}
 	
 	public User loginUser(String email, String password) {
@@ -59,7 +64,9 @@ public class UserManager extends AModelManager {
 			
 			try (ResultSet rs = pstmnt.executeQuery()) {
 				rs.next();
-				return new User(rs);
+				if (!StringHelper.IsNullOrEmpty(rs.getString("email"))) {
+					return new User(rs);
+				}
 			}
 		} catch (SQLException e) { }
 		

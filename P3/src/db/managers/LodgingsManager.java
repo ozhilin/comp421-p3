@@ -100,7 +100,11 @@ public class LodgingsManager extends AModelManager {
 				rs.next();
 				return rs.getInt("lid");
 			}
-		} catch (SQLException e) { } 		
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
+		} 		
 
 		return -1;
 	}

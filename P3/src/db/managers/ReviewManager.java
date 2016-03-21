@@ -33,7 +33,11 @@ public class ReviewManager extends AModelManager {
 			
 			stmnt.executeUpdate();
 			conn.commit();
-		} catch (SQLException e) { } 	
+		} catch (SQLException e) { 
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
+		} 	
 	}
 
 	public List<Review> getReviewByLid(int lid) {

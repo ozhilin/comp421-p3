@@ -170,12 +170,14 @@ public class MainScreen {
 		UserManager um = new UserManager();
 		try {
 			mUser = um.loginUser(email, password);
-			System.out.println("Welcome " + mUser.firstName + "!");
-			backToMain();
-		} catch (NullPointerException e) {
-			System.out.println("Invalid login");
-			backToMain();
-		}
+			if (mUser != null) {
+				System.out.println("Welcome " + mUser.firstName + "!");
+				backToMain();
+			} else {
+				System.out.println("Invalid login");
+				backToMain();
+			}
+		} catch (NullPointerException e) { }
 	}
 
 	private void updateUser(User user) {
@@ -312,10 +314,7 @@ public class MainScreen {
 			} catch (NumberFormatException e) {
 				System.out
 						.println("Invalid input, is this a valid lodging id?");
-			} catch (Exception e) {
-				e.printStackTrace();
-
-			}
+			} catch (Exception e) { }
 		}
 	}
 
@@ -338,8 +337,8 @@ public class MainScreen {
 		ReviewManager rm = new ReviewManager();
 		rm.createNewReview(review, bid, mUser);
 		Review r = rm.getReviewByBid(bid); 
-		if (!r.email.equals(mUser.email) || (r.rating != rating)) {
-		System.out.println("Failed posting the review"); } else {
+		if (r == null || r.email == null || !r.email.equals(mUser.email) || (r.rating != rating)) {
+		System.out.println("Failed posting the review, note that you cannot review a lodging more than once per booking."); } else {
 		System.out.println("Successfully posted your review!"); }
 		backToMain();
 	}

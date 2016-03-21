@@ -21,7 +21,7 @@ public class User {
 	  email = QueryHelper.readString(rs, "email");
 	  password = QueryHelper.readString(rs, "password");
 	  firstName = QueryHelper.readString(rs, "fname");
-	  lastName = QueryHelper.readString(rs, "nname");
+	  lastName = QueryHelper.readString(rs, "lname");
 	  birthdate = QueryHelper.readDate(rs, "birthday");
 	  isCustomer = QueryHelper.readBoolean(rs, "is_customer");
 	  isHost = QueryHelper.readBoolean(rs, "is_host");

@@ -35,7 +35,9 @@ public class CreditCardManager extends AModelManager {
 				aid = rs.getInt("aid");
 			}
 		} catch (SQLException e2) {
-			return "";
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
 		}
 
 		if (aid == -1) return "";
@@ -82,6 +84,9 @@ public class CreditCardManager extends AModelManager {
 				return pid;
 			}
 		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
 		} catch (FileNotFoundException e) { }
 		
 		return "";

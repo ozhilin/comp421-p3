@@ -1,0 +1,86 @@
+Connection Successful
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+You must be logged in to proceed, please login using choice 2
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Lodgings
+1. TOP SPOT NEAR EVRYTHING FREE PARKING -- Rating: 5.0
+2. NEW LUXURY MODERN CONDO IN TORONTO -- Rating: 4.5
+3. Elegant and sophisticated Townhouse -- Rating: 3.0
+4. Amazing 8BR Suites Waterview House -- Rating: 5.0
+5. Jesses Garden Getaway -- Rating: 0.0
+6. Cozy place in Gatineau -- Rating: 3.0
+7. Sweet home +Metro near downtown -- Rating: 4.0
+8. Beautiful and cosy oasis in Ottawa -- Rating: 1.0
+9. Beautiful warm unique Laval home -- Rating: 0.0
+10. Stunning view, 28th floor Downtown -- Rating: 0.0
+11. Nice house -- Rating: 0.0
+----------------
+Select a lodging number to see the full description, or 'b' to go back to main menu
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+You must be logged in to proceed, please login using choice 2
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Login
+Enter your email: Enter your password: Welcome John!
+Enter 'b' to go back to the main menu or 'q' to quit
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Book a Place
+1. TOP SPOT NEAR EVRYTHING FREE PARKING
+2. NEW LUXURY MODERN CONDO IN TORONTO
+3. Elegant and sophisticated Townhouse
+4. Amazing 8BR Suites Waterview House
+5. Jesses Garden Getaway
+6. Cozy place in Gatineau
+7. Sweet home +Metro near downtown
+8. Beautiful and cosy oasis in Ottawa
+9. Beautiful warm unique Laval home
+10. Stunning view, 28th floor Downtown
+11. Nice house
+Enter the number of the lodging you would like to book: 
+Enter FROM date: (yyyy-mm-dd)
+Enter TO date:
+my mom's credit card, 1234-4567-1234-5678, expires on 2017-05-10
+Enter your credit card number from saved payments:
+Alternatively, to add a new payment method, enter 'new'
+Successfully booked your stay! Your booking ID is : 2 . Please store this number in a safe place.
+Enter 'b' to go back to the main menu or 'q' to quit
+Bye Bye

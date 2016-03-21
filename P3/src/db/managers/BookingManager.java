@@ -38,7 +38,11 @@ public class BookingManager extends AModelManager {
 			if (pid == "") return -1;
 			
 			return createBookingWithPaymentMethod(booking, pid, user);
-		} catch (SQLException e) { }
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
+		}
 		
 		return -1;
 	}
@@ -69,7 +73,11 @@ public class BookingManager extends AModelManager {
 				rs.next();
 				return rs.getInt("bid");
 			}
-		} catch (SQLException e) { }		
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
+		}		
 		return -1;
 	}
 	

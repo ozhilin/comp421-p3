@@ -39,7 +39,9 @@ public class AddressManager extends AModelManager {
 				return rs.getInt("aid");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) { }
 		}
 		
 		return -1;
