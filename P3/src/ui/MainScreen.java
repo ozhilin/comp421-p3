@@ -354,20 +354,41 @@ public class MainScreen {
 		for (Lodging l : lodgings) {
 			System.out.println(l.lid + ". " + l.name);
 		}
-		System.out
-				.println("Enter the number of the lodging you would like to book: ");
+		System.out.println("Enter the number of the lodging you would like to book: ");
 		String lidString = scanner.nextLine();
 		int lid = Integer.parseInt(lidString);
 		Lodging l = alq.getLodgingByLid(lid);
 		booking.lodging = l;
-		System.out.println("Enter FROM date: (yyyy-mm-dd)");
-		String from = scanner.nextLine();
-		Date fromDate = createDate(from);
-		booking.fromDate = fromDate;
-		System.out.println("Enter TO date:");
-		String to = scanner.nextLine();
-		Date toDate = createDate(to);
-		booking.toDate = toDate;
+		
+		Date fromDate = null, toDate = null;
+		while (true) {
+			System.out.println("Enter FROM date: (yyyy-mm-dd)");
+			String from = scanner.nextLine();
+			fromDate = createDate(from);
+			booking.fromDate = fromDate;
+			System.out.println("Enter TO date:");
+			String to = scanner.nextLine();
+			toDate = createDate(to);
+			booking.toDate = toDate;
+			
+			if (fromDate == null || toDate == null ||
+				fromDate.getTime() < (new Date()).getTime() || 
+				toDate.getTime() < fromDate.getTime()) {
+
+				System.out.println("Invalid duration dates, has to be in the future and at least one day");
+				System.out.println("Do you want to try to enter new dates? (y/n)");
+							
+				String input = scanner.nextLine();
+				if (input.equalsIgnoreCase("y")) {
+					continue;
+				} else if (input.equalsIgnoreCase("n")) {
+					backToMain();
+				}
+			}
+				
+			break;
+		}
+		
 		CreditCardManager ccm = new CreditCardManager();
 		Map<String, CreditCard> cards = ccm.getPaymentsByUser(mUser);
 
@@ -376,8 +397,7 @@ public class MainScreen {
 					+ c.expirationDate);
 		}
 		System.out.println("Enter your credit card number from saved payments:");
-		System.out
-				.println("Alternatively, to add a new payment method, enter 'new'");
+		System.out.println("Alternatively, to add a new payment method, enter 'new'");
 		String pid = scanner.nextLine();
 		if (pid.equalsIgnoreCase("new")) {
 			// create payment

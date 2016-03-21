@@ -15,7 +15,6 @@ import db.JDBCConnectionManager;
  * 
  * Main class for the apartment rental program.
  */
-
 public class ApartmentRental {
 	public static Scanner scanner;
 

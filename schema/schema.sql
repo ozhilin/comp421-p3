@@ -19,10 +19,9 @@ CREATE TABLE Address (
   country VARCHAR (255),
   province VARCHAR (50),
   city VARCHAR (50),
-  postal_code VARCHAR (20)
-  CONSTRAINT unique_address UNIQUE (aid, address_num, street, apt_num, country, province, city, postal_code)
+  postal_code VARCHAR (20),
+  CONSTRAINT unique_address UNIQUE (address_num, street, apt_num, country, province, city, postal_code)
 );
-
 
 CREATE TABLE PaymentAccounts (
   pid VARCHAR(128) PRIMARY KEY,
