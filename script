@@ -1,0 +1,438 @@
+Connection Successful
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 1
+
+Lodgings
+1. TOP SPOT NEAR EVRYTHING FREE PARKING -- Rating: 5.0
+2. NEW LUXURY MODERN CONDO IN TORONTO -- Rating: 4.5
+3. Elegant and sophisticated Townhouse -- Rating: 5.0
+4. Amazing 8BR Suites Waterview House -- Rating: 5.0
+5. Jesses Garden Getaway -- Rating: 0.0
+6. Cozy place in Gatineau -- Rating: 3.0
+7. Sweet home +Metro near downtown -- Rating: 4.0
+8. Beautiful and cosy oasis in Ottawa -- Rating: 1.0
+9. Beautiful warm unique Laval home -- Rating: 0.0
+10. Stunning view, 28th floor Downtown -- Rating: 0.0
+----------------
+Select a lodging number to see the full description, or 'b' to go back to main menu
+
+>>> 3
+
+4 beds + 2 couches. Impeccably maintained property. Steps away from parks, all services and public transportation. Beautiful quiet backyard with wooden deck and an outside spa. Stunning bathroom with a separate glass shower.
+
+Reviews:
+I was extremely happy with this room and the location. The view was beautiful and we were close to all of the attractions in Toronto. From the time that we were let into the building until we left, it felt like home.
+
+
+View Another lodging? (y/n)
+
+>>> n
+
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Login
+Enter your email: 
+
+>>> asdf
+
+Enter your password: 
+
+>>> asdf
+
+Invalid login
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 3
+
+Create Account
+Enter an email: 
+
+>>> student@comp412.mcgill.ca
+
+Enter a password: 
+
+>>> secret
+
+Enter a first name: 
+
+>>> Student
+
+Enter a last name: 
+
+>>> Smith
+
+Enter a birthday: (yyyy-mm-dd) 
+
+>>> 1980-05-05
+
+Are you a host? (y/n) 
+
+>>> y
+
+Are you a customer? (y/n) 
+
+>>> y
+
+Successfully created your account!
+Welcome Student!
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service Student, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 4
+
+What would you like to change?
+1 -> first name
+2 -> last name
+3 -> birthdate
+4 -> host status
+5 -> customer status
+
+>>> 1
+
+Enter a new first name:
+
+>>> John
+
+Successfully updated user account
+Would you like to change something else? (y/n)
+
+>>> n
+
+Enter 'b' to go back to the main menu or 'q' to quit
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 5
+
+Book a Place
+1. TOP SPOT NEAR EVRYTHING FREE PARKING
+2. NEW LUXURY MODERN CONDO IN TORONTO
+3. Elegant and sophisticated Townhouse
+4. Amazing 8BR Suites Waterview House
+5. Jesses Garden Getaway
+6. Cozy place in Gatineau
+7. Sweet home +Metro near downtown
+8. Beautiful and cosy oasis in Ottawa
+9. Beautiful warm unique Laval home
+10. Stunning view, 28th floor Downtown
+Enter the number of the lodging you would like to book: 
+
+>>> 3
+
+Enter FROM date: (yyyy-mm-dd)
+
+>>> 2015-05-05
+
+Enter TO date:
+
+>>> 2015-05-10
+
+Invalid duration dates, has to be in the future and at least one day
+Do you want to try to enter new dates? (y/n)
+
+>>> y
+
+Enter FROM date: (yyyy-mm-dd)
+
+>>> 2016-05-05
+
+Enter TO date:
+
+>>> 2016-05-10
+
+Enter your credit card number from saved payments:
+Alternatively, to add a new payment method, enter 'new'
+
+>>> new
+
+Enter your credit card number:
+
+>>> 1234-5678-1234-5678
+
+Enter your payment's name:
+
+>>> mom's credit card
+
+Enter your billing address
+Street Number: 
+
+>>> 123
+
+Street Name: 
+
+>>> McGill
+
+City: 
+
+>>> Montreal
+
+Country: 
+
+>>> Canada
+
+Enter an expiration date: (yyyy-mm-dd)
+
+>>> 2017-05-10
+
+Successfully added your card!
+Successfully booked your stay! Your booking ID is : 1 . Please store this number in a safe place.
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Post a Review
+Enter your booking id:
+
+>>> 1
+
+Enter your star rating: (between 1 and 5)
+
+>>> 1
+
+Enter your comments:
+
+>>> the place was terrible
+
+Successfully posted your review!
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 1
+
+Lodgings
+1. TOP SPOT NEAR EVRYTHING FREE PARKING -- Rating: 5.0
+2. NEW LUXURY MODERN CONDO IN TORONTO -- Rating: 4.5
+3. Elegant and sophisticated Townhouse -- Rating: 3.0 (notice the changed rating)
+4. Amazing 8BR Suites Waterview House -- Rating: 5.0
+5. Jesses Garden Getaway -- Rating: 0.0
+6. Cozy place in Gatineau -- Rating: 3.0
+7. Sweet home +Metro near downtown -- Rating: 4.0
+8. Beautiful and cosy oasis in Ottawa -- Rating: 1.0
+9. Beautiful warm unique Laval home -- Rating: 0.0
+10. Stunning view, 28th floor Downtown -- Rating: 0.0
+----------------
+Select a lodging number to see the full description, or 'b' to go back to main menu
+
+>>> 3
+
+4 beds + 2 couches. Impeccably maintained property. Steps away from parks, all services and public transportation. Beautiful quiet backyard with wooden deck and an outside spa. Stunning bathroom with a separate glass shower.
+
+Reviews:
+I was extremely happy with this room and the location. The view was beautiful and we were close to all of the attractions in Toronto. From the time that we were let into the building until we left, it felt like home.
+
+the place was terrible (notice the new review was added)
+
+
+View Another lodging? (y/n)
+
+>>> n
+
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 6
+
+Post a Review
+Enter your booking id:
+
+>>> 1
+
+Enter your star rating: (between 1 and 5)
+
+>>> 3
+
+Enter your comments:
+
+>>> the place was actually ok
+
+Failed posting the review, note that you cannot review a lodging more than once per booking.
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 7
+
+Add a lodging
+Enter an address
+Street Number: 
+
+>>> 123
+
+Street Name: 
+
+>>> McGill
+
+City: 
+
+>>> Montreal
+
+Country: 
+
+>>> Canada
+
+Please enter a lodging name:
+
+>>> Nice place downtown
+
+Please enter a description: (0-300 characters)
+
+>>> renting out a convenient apartment right next to school
+
+Please enter a lodging type: (apartment, house, condo...)
+
+>>> apartment
+
+Maximum capacity?
+
+>>> 2
+
+Number of bathrooms?
+
+>>> 1
+
+Number of bedrooms?
+
+>>> 1
+
+Number of beds?
+
+>>> 1
+
+Custom policy?
+
+>>> none
+
+price/day?
+
+>>> 50
+
+Successfully added your lodging!
+Enter 'b' to go back to the main menu or 'q' to quit
+
+>>> b
+
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+
+>>> 1
+
+Lodgings
+1. TOP SPOT NEAR EVRYTHING FREE PARKING -- Rating: 5.0
+2. NEW LUXURY MODERN CONDO IN TORONTO -- Rating: 4.5
+3. Elegant and sophisticated Townhouse -- Rating: 3.0
+4. Amazing 8BR Suites Waterview House -- Rating: 5.0
+5. Jesses Garden Getaway -- Rating: 0.0
+6. Cozy place in Gatineau -- Rating: 3.0
+7. Sweet home +Metro near downtown -- Rating: 4.0
+8. Beautiful and cosy oasis in Ottawa -- Rating: 1.0
+9. Beautiful warm unique Laval home -- Rating: 0.0
+10. Stunning view, 28th floor Downtown -- Rating: 0.0
+11. Nice place downtown. -- Rating: 0.0 (notice the new added lodging)
+----------------
+Select a lodging number to see the full description, or 'b' to go back to main menu
+renting out a convenient apartment right next to school
+
+Reviews:
+This lodging has never been reviewed!
+
+View Another lodging? (y/n)
+Welcome to the apartment rental service John, what do you want to do? Choose an option between 1 and 5 or enter 'q' to quit
+1 -> Browse Apartments
+2 -> Login
+3 -> Create Account
+4 -> Update User Account
+5 -> Book a Lodging
+6 -> Post a Review
+7 -> Add a Lodging
+q -> Quit
+Bye Bye
