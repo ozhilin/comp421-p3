@@ -4,11 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * 	@author Oleg
- *
- *	Test class for connecting to the database on postgres
- */
 public class JDBCConnectionManager {
 	private static String url =  "jdbc:postgresql://comp421.cs.mcgill.ca:5432/cs421?connectTimeout=3";
 //	private static String url =  "jdbc:postgresql://localhost:5432/cs421?connectTimeout=3";
