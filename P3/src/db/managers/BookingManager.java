@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import db.models.Booking;
@@ -75,17 +76,19 @@ public class BookingManager extends AModelManager {
 	public List<Booking> viewUserBookings(User user) {
 		List<Booking> result = new ArrayList<Booking>();
 
-		String query;
+		String query = "";
 		try {
 			query = QueryHelper.findQuery("bookings/bookingsByUser.sql");
 		} catch (FileNotFoundException e1) {
 			return null;
 		}
 		
+		if (query == "") return null;
+		
 		try (PreparedStatement stmnt = conn.prepareStatement(query)) {
 			stmnt.setString(1, user.email);
 			
-			try (ResultSet rs = stmnt.executeQuery(query)) {
+			try (ResultSet rs = stmnt.executeQuery()) {
 				while (rs.next()) {
 					result.add(new Booking(rs));
 				}
@@ -95,5 +98,29 @@ public class BookingManager extends AModelManager {
 		} catch (SQLException e) { } 			
 
 		return null;
+	}
+	
+	public boolean isLodgingBookedDuringDates(int lodgingId, Date fromDate, Date toDate) {
+		String query = "";
+
+		try {
+			query = QueryHelper.findQuery("bookings/lodgingBookedBetweenDates.sql");
+		} catch (FileNotFoundException e1) {
+			return true;
+		}
+		
+		if (query == "") return true;
+		
+		try (PreparedStatement stmnt = conn.prepareStatement(query)) {
+			stmnt.setInt(1, lodgingId);
+			stmnt.setDate(2, new java.sql.Date(fromDate.getTime()));
+			stmnt.setDate(3, new java.sql.Date(toDate.getTime()));
+			
+			try (ResultSet rs = stmnt.executeQuery()) {
+				return rs.isBeforeFirst();
+			}
+		} catch (SQLException e) { } 			
+		
+		return true;
 	}
 }

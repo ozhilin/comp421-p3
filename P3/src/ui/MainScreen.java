@@ -360,6 +360,7 @@ public class MainScreen {
 		Lodging l = alq.getLodgingByLid(lid);
 		booking.lodging = l;
 		
+		BookingManager bm = new BookingManager();
 		Date fromDate = null, toDate = null;
 		while (true) {
 			System.out.println("Enter FROM date: (yyyy-mm-dd)");
@@ -385,9 +386,22 @@ public class MainScreen {
 					backToMain();
 				}
 			}
+
+			if (bm.isLodgingBookedDuringDates(lid, fromDate, toDate)) {
+				System.out.println("Lodging is already booked between those dates!");
+				System.out.println("Do you want to try to enter new dates? (y/n)");
+							
+				String input = scanner.nextLine();
+				if (input.equalsIgnoreCase("y")) {
+					continue;
+				} else {
+					backToMain();
+				}
+			}
 				
 			break;
 		}
+		
 		
 		CreditCardManager ccm = new CreditCardManager();
 		Map<String, CreditCard> cards = ccm.getPaymentsByUser(mUser);
@@ -435,7 +449,6 @@ public class MainScreen {
 		double price = days * l.dayPrice;
 		booking.totalPrice = price;
 
-		BookingManager bm = new BookingManager();
 		int bid = bm.createBookingWithPaymentMethod(booking, pid, mUser);
 		if (bid < 0) {
 			System.out.println("Something went wrong when creating your booking. Please make sure all input values are valid and try again.");
