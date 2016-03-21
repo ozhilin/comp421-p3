@@ -1,18 +1,9 @@
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 import ui.MainScreen;
 import db.JDBCConnectionManager;
-import db.managers.LodgingsManager;
-import db.managers.UserManager;
-import db.models.Address;
-import db.models.Lodging;
-import db.models.User;
 
 /**
  * COMP 421 - Group 40
