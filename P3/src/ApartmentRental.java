@@ -32,130 +32,13 @@ public class ApartmentRental {
 	 * @param args The database password is provided as a command line argument
 	 */
 	public static void main(String[] args) {
-		Connection conn = null;
-		try {
-			// Establish db connection
-			conn = JDBCConnectionManager.getConnection(args[0], args[1]);
-
-			// Scanner needs to be passed around otherwise it closes system in
-			scanner = new Scanner(System.in); 
+		try (Connection conn = JDBCConnectionManager.getConnection(args[0], args[1])) {
 			MainScreen screen = new MainScreen();
 			screen.printOptions();
 
 			System.out.println("Done");
-		} finally {
-			scanner.close();
-			try { 
-				if (conn != null) conn.close(); 
-			} catch (SQLException e) 
-			{ e.printStackTrace(); }
-		}
-	}
-
-	/**
-	 * EXAMPLE USAGE YO
-	 */
-	private static void createLodgingExample(User user) {
-		Address a = new Address();
-		a.num = 123;
-		a.street = "McGill College";
-		a.city = "Montreal";
-		a.country = "Canada";
-		
-		Lodging l = new Lodging();
-		l.address = a;
-		l.email = user.email;
-		l.name = "A new lodging!";
-		
-		// Permission hack for example, don't actually do this.
-		boolean temp = user.isHost;
-		user.isHost = true;
-
-		LodgingsManager lm = new LodgingsManager();
-		int lid = lm.createNewLodging(l, user);
-		
-		Lodging l2 = lm.getLodgingByLid(lid);
-		
-		if (!l2.email.equals(l.email) || !l2.name.equals(l.name)) { 
-			System.out.println("Failed!"); 
-		} else {
-			System.out.println("Success!");
-		}
-		
-		user.isHost = temp;
-	}
-
-	private static void allLodgingsExample() {
-		LodgingsManager alq = new LodgingsManager();
-		List<Lodging> lodgings = alq.getAllLodgings();
-
-		for (Lodging l : lodgings) {
-			System.out.println(l.lid + ", " + l.name);
-		}
-	}
-
-	private static void createUserExample() {
-		try (Scanner scanner = new Scanner(System.in)) {
-			User newUser = new User();
-
-			System.out.print("Enter an email: ");
-			newUser.email = scanner.next();
-
-			System.out.print("Enter a password: ");
-			newUser.password = scanner.next();
-
-			System.out.print("Enter a first name: ");
-			newUser.firstName = scanner.next();
-
-			System.out.print("Enter a last name: ");
-			newUser.lastName = scanner.next();
-
-			UserManager um = new UserManager();
-			um.createUser(newUser);
-		}
-	}
-
-	/*
-	 * Give an email and password and get a user instance
-	 */
-	private static User loginExample() {
-		System.out.println("Login");
-
-		System.out.print("Enter your email: ");
-		String email = scanner.next();
-
-		System.out.print("Enter your password: ");
-		String password = scanner.next();
-
-		UserManager um = new UserManager();
-		User user = um.loginUser(email, password);
-
-		if (user == null) {
-			System.out.println("Invalid login");
-			return null;
-		}
-
-		String birthday = user.birthdate != null ? user.birthdate.toString() : "not specified";
-		System.out.println(user.firstName + " " + user.lastName	+ ", birthday: " + birthday);
-
-		return user;
-	}
-
-	private static void updateExample(User user) {
-		System.out.println("Update");
-		System.out.println("Enter a new birthdate: (yyyy-mm-dd) ");
-
-		String dateString = scanner.next();
-		try {
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date date = formatter.parse(dateString);
-
-			// Add this to some helper probably
-			user.birthdate = new java.sql.Date(date.getTime());
-			UserManager um = new UserManager();
-			um.updateUser(user);
-		} catch (ParseException e) {
-			System.out.println("Invalid birthdate");
-		}
+		} catch (SQLException e) {
+			System.out.println("An error occured while closing the connection!");
+		}	
 	}
 }

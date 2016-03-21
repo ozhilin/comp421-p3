@@ -28,6 +28,7 @@ public class QueryHelper {
 			System.out.println("Queries don't have the right encoding for some reason: " + fileName);
 		} catch (Exception e) {
 			System.out.println("Could not find file: " + fileName);
+			System.out.println("Make sure the res/ folder is in your bin folder (if you are using Eclipse, you need to add it as a source folder");
 		}
 
 		if (filePath == "")	throw new FileNotFoundException();
