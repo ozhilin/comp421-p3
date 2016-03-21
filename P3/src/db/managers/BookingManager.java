@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.models.Booking;
+import db.models.CreditCard;
 import db.models.Lodging;
 import db.models.User;
 import db.util.QueryHelper;
@@ -27,12 +28,13 @@ public class BookingManager extends AModelManager {
 		int aid = -1;
 		
 		try {
-			createAddressStmnt.executeQuery();
+			createAddressStmnt.executeUpdate();
 			ResultSet rs = createAddressStmnt.getGeneratedKeys();
 			rs.next();
 			aid = rs.getInt("aid");
 		} catch (SQLException e1) {
 			System.out.println("Something went wrong when trying to create the address.");
+			e1.printStackTrace();
 		}
 
 		if (aid == -1) return -1;
@@ -42,11 +44,19 @@ public class BookingManager extends AModelManager {
 		
 		if (pid == "") return -1;
 		
+		return createBookingWithPaymentMethod(booking, pid, user);
+	}
+	
+	public int createBookingWithPaymentMethod(Booking booking, String creditCardId, User user) {
+		if (!user.isLoggedIn()) {
+			return -1; 
+		}
+		
 		try {
 			String query = QueryHelper.findQuery("bookings/createBooking.sql");
 			PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
-			stmnt.setString(1, pid);
+			stmnt.setString(1, creditCardId);
 			stmnt.setInt(2, booking.lodging.lid);
 			stmnt.setDate(3, new java.sql.Date(booking.fromDate.getTime())); // From date MUST be specified
 			stmnt.setDate(4, new java.sql.Date(booking.toDate.getTime())); // From date MUST be specified

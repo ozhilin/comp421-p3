@@ -264,11 +264,11 @@ public class MainScreen {
 			System.out.println(l.lid + ". " + l.name + " -- Rating: "
 					+ l.avgRating);
 		}
-		viewDetails();
+		viewDetails(lodgings);
 		// TODO View details about lodging
 	}
 
-	private void viewDetails() {
+	private void viewDetails(List<Lodging> lodgings) {
 		while (true) {
 			System.out.println("----------------");
 			System.out
@@ -280,27 +280,29 @@ public class MainScreen {
 			}
 
 			try {
-				Connection conn = JDBCConnectionManager.getConnection();
-				Statement stmnt = conn.createStatement();
-
 				int lodgingNum = Integer.parseInt(input);
-				String getLodgingDescriptionSQL = "SELECT description FROM lodgings WHERE lid = "
-						+ lodgingNum;
-				ResultSet rs = stmnt.executeQuery(getLodgingDescriptionSQL);
+				boolean found = false;
+				for (Lodging l : lodgings) {
+					if (l.lid == lodgingNum) {
+						found = true;
+						System.out.println(l.description);
+						System.out.println("");
+						System.out.println("Reviews:");
 
-				if (rs.next()) {
-					String description = rs.getString("description");
-					List<Review> reviews = new ArrayList<Review>();
-					ReviewManager rm = new ReviewManager();
-					reviews = rm.getReviewByLid(lodgingNum);
-					System.out.println(description);
-					System.out.println("");
-					System.out.println("Reviews:");
-					for (Review r : reviews) {
-						System.out.println(r.review);
-						System.out.println();
+						List<Review> reviews = new ArrayList<Review>();
+						ReviewManager rm = new ReviewManager();
+						reviews = rm.getReviewByLid(lodgingNum);
+						for (Review r : reviews) {
+							System.out.println(r.review);
+							System.out.println();
+						}
+						if (reviews.size() == 0) {
+							System.out.println("This lodging has never been reviewed!");
+						}
+						
 					}
-				} else {
+				}
+				if (!found) {
 					System.out.println("Lodging was not found!");
 				}
 
@@ -400,6 +402,7 @@ public class MainScreen {
 			Date expiration = createDate(date);
 			cc.expirationDate = expiration;
 			String pid2 = ccm.createNewCreditCard(cc, mUser);
+			pid = pid2;
 			if (pid2.equals("")) {
 				System.out.println("Something went wrong when adding your credit card. Please make sure all input values are valid and try again.");
 				backToMain();
@@ -418,7 +421,7 @@ public class MainScreen {
 		booking.totalPrice = price;
 
 		BookingManager bm = new BookingManager();
-		int bid = bm.createBooking(booking, mUser);
+		int bid = bm.createBookingWithPaymentMethod(booking, pid, mUser);
 		if (bid < 0) {
 			System.out.println("Something went wrong when creating your booking. Please make sure all input values are valid and try again.");
 		} else {
