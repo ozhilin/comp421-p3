@@ -1,8 +1,5 @@
 package ui;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import db.JDBCConnectionManager;
 import db.managers.BookingManager;
 import db.managers.CreditCardManager;
 import db.managers.LodgingsManager;
@@ -265,7 +261,6 @@ public class MainScreen {
 					+ l.avgRating);
 		}
 		viewDetails(lodgings);
-		// TODO View details about lodging
 	}
 
 	private void viewDetails(List<Lodging> lodgings) {

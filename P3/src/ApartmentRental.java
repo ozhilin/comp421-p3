@@ -1,4 +1,5 @@
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,23 +32,24 @@ public class ApartmentRental {
 	 * @param args The database password is provided as a command line argument
 	 */
 	public static void main(String[] args) {
-		// Establish db connection
-		Connection conn = JDBCConnectionManager.getConnection(args[0], args[1]);
+		Connection conn = null;
+		try {
+			// Establish db connection
+			conn = JDBCConnectionManager.getConnection(args[0], args[1]);
 
-		// Scanner needs to be passed around otherwise it closes system in
-		scanner = new Scanner(System.in); 
+			// Scanner needs to be passed around otherwise it closes system in
+			scanner = new Scanner(System.in); 
+			MainScreen screen = new MainScreen();
+			screen.printOptions();
 
-//		User user = loginExample();
-//		createLodgingExample(user);
-		//allLodgingsExample();
-		// createUserExample();
-		//User user = loginExample();
-		//updateExample(user);
-		MainScreen screen = new MainScreen();
-		screen.printOptions();
-		scanner.close();
-
-		System.out.println("Done");
+			System.out.println("Done");
+		} finally {
+			scanner.close();
+			try { 
+				if (conn != null) conn.close(); 
+			} catch (SQLException e) 
+			{ e.printStackTrace(); }
+		}
 	}
 
 	/**

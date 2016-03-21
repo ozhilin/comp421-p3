@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.models.Booking;
-import db.models.CreditCard;
-import db.models.Lodging;
 import db.models.User;
 import db.util.QueryHelper;
 
@@ -21,41 +19,42 @@ public class BookingManager extends AModelManager {
 		}
 		
 		AddressManager am = new AddressManager();
-		PreparedStatement createAddressStmnt = am.createAddressStatement(booking.lodging.address);
-		
-		if (createAddressStmnt == null) return -1;
-		
-		int aid = -1;
-		
-		try {
+		try (PreparedStatement createAddressStmnt = am.createAddressStatement(booking.lodging.address)) {
+			if (createAddressStmnt == null) return -1;
+			
+			int aid = -1;
 			createAddressStmnt.executeUpdate();
-			ResultSet rs = createAddressStmnt.getGeneratedKeys();
-			rs.next();
-			aid = rs.getInt("aid");
-		} catch (SQLException e1) {
-			System.out.println("Something went wrong when trying to create the address.");
-			e1.printStackTrace();
-		}
+			try (ResultSet rs = createAddressStmnt.getGeneratedKeys()) {
+				rs.next();
+				aid = rs.getInt("aid");
+			}
 
-		if (aid == -1) return -1;
+			if (aid == -1) return -1;
+			
+			CreditCardManager ccm = new CreditCardManager();
+			String pid = ccm.createNewCreditCard(booking.creditCard, user, false); // No need to commit the transaction.
+			
+			if (pid == "") return -1;
+			
+			return createBookingWithPaymentMethod(booking, pid, user);
+		} catch (SQLException e) { }
 		
-		CreditCardManager ccm = new CreditCardManager();
-		String pid = ccm.createNewCreditCard(booking.creditCard, user, false); // No need to commit the transaction.
-		
-		if (pid == "") return -1;
-		
-		return createBookingWithPaymentMethod(booking, pid, user);
+		return -1;
 	}
 	
 	public int createBookingWithPaymentMethod(Booking booking, String creditCardId, User user) {
 		if (!user.isLoggedIn()) {
 			return -1; 
 		}
-		
+
+		String query;
 		try {
-			String query = QueryHelper.findQuery("bookings/createBooking.sql");
-			PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			
+			query = QueryHelper.findQuery("bookings/createBooking.sql");
+		} catch (FileNotFoundException e1) {
+			return -1;
+		}
+		
+		try (PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			stmnt.setString(1, creditCardId);
 			stmnt.setInt(2, booking.lodging.lid);
 			stmnt.setDate(3, new java.sql.Date(booking.fromDate.getTime())); // From date MUST be specified
@@ -65,41 +64,36 @@ public class BookingManager extends AModelManager {
 			stmnt.executeUpdate();
 			conn.commit();
 			
-			ResultSet rs = stmnt.getGeneratedKeys();
-			rs.next();
-			return rs.getInt("bid");
-		} catch (SQLException e) {
-			System.out.println("Create booking failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not find createBooking query");
-		}
-		
+			try (ResultSet rs = stmnt.getGeneratedKeys()) {
+				rs.next();
+				return rs.getInt("bid");
+			}
+		} catch (SQLException e) { }		
 		return -1;
 	}
 	
 	public List<Booking> viewUserBookings(User user) {
 		List<Booking> result = new ArrayList<Booking>();
-		
+
+		String query;
 		try {
-			String query = QueryHelper.findQuery("bookings/bookingsByUser.sql");
-			
-			PreparedStatement stmnt = conn.prepareStatement(query);
+			query = QueryHelper.findQuery("bookings/bookingsByUser.sql");
+		} catch (FileNotFoundException e1) {
+			return null;
+		}
+		
+		try (PreparedStatement stmnt = conn.prepareStatement(query)) {
 			stmnt.setString(1, user.email);
 			
-			ResultSet rs = stmnt.executeQuery(query);
-			
-			while (rs.next()) {
-				result.add(new Booking(rs));
+			try (ResultSet rs = stmnt.executeQuery(query)) {
+				while (rs.next()) {
+					result.add(new Booking(rs));
+				}
+				
+				return result;
 			}
-			
-			return result;
-		} catch (SQLException e) {
-			System.out.println("View user bookings failed");
-		} catch (FileNotFoundException e) {
-			System.out.println("bookingByUser query was not found");
-		}
-			
+		} catch (SQLException e) { } 			
+
 		return null;
 	}
 }

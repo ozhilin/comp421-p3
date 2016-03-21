@@ -25,10 +25,9 @@ public class QueryHelper {
 		try {
 			filePath = URLDecoder.decode(classLoader.getResource(fileName).getFile(), "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
+			System.out.println("Queries don't have the right encoding for some reason: " + fileName);
 		} catch (Exception e) {
 			System.out.println("Could not find file: " + fileName);
-			e.printStackTrace();
 		}
 
 		if (filePath == "")	throw new FileNotFoundException();

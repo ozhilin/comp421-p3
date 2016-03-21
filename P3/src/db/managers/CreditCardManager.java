@@ -18,64 +18,71 @@ public class CreditCardManager extends AModelManager {
 	}
 	
 	public String createNewCreditCard(CreditCard creditCard, User user, boolean shouldCommit) {
-		// Only a host can create
 		if (!user.isLoggedIn()) {
 			return "";
 		}
 			
 		AddressManager am = new AddressManager();
-		PreparedStatement createAddressStmnt = am.createAddressStatement(creditCard.address);
-		
-		if (createAddressStmnt == null) return "";
-		
+
 		int aid = -1;
-		
-		try {
+		try (PreparedStatement createAddressStmnt = am.createAddressStatement(creditCard.address)) {
+			if (createAddressStmnt == null) return "";
+			
 			createAddressStmnt.executeUpdate();
 
-			ResultSet rs = createAddressStmnt.getGeneratedKeys();
-			rs.next();
-			aid = rs.getInt("aid");
-		} catch (SQLException e1) {
-			System.out.println("Something went wrong when trying to create the address when creating the payment.");
-			e1.printStackTrace();
+			try (ResultSet rs = createAddressStmnt.getGeneratedKeys()) {
+				rs.next();
+				aid = rs.getInt("aid");
+			}
+		} catch (SQLException e2) {
+			return "";
 		}
-		
+
 		if (aid == -1) return "";
 		
+		String createPaymentAccountCommand = "";
 		try {
-			String createPaymentAccountCommand = QueryHelper.findQuery("creditCard/createPaymentAccount.sql");
-			PreparedStatement createPaymentAccountStmnt = conn.prepareStatement(createPaymentAccountCommand, Statement.RETURN_GENERATED_KEYS);
+			createPaymentAccountCommand = QueryHelper.findQuery("creditCard/createPaymentAccount.sql");
+		} catch (FileNotFoundException e1) {
+			return "";
+		}
+		
+		if (createPaymentAccountCommand == "") return "";
+
+		try (PreparedStatement createPaymentAccountStmnt = 
+				conn.prepareStatement(createPaymentAccountCommand, Statement.RETURN_GENERATED_KEYS)) {
 
 			createPaymentAccountStmnt.setString(1, creditCard.pid);
 			createPaymentAccountStmnt.setString(2, creditCard.email);
 			createPaymentAccountStmnt.setString(3, creditCard.name);
 			createPaymentAccountStmnt.executeUpdate();
 			
-			ResultSet cpRS = createPaymentAccountStmnt.getGeneratedKeys();
-			cpRS.next();
-			String pid = cpRS.getString("pid");
-			
-			String createCreditCardCommand = QueryHelper.findQuery("creditCard/createCreditCard.sql");
-			PreparedStatement createCreditCardStmnt = conn.prepareStatement(createCreditCardCommand, Statement.RETURN_GENERATED_KEYS);
-
-			createCreditCardStmnt.setString(1, creditCard.pid);
-			createCreditCardStmnt.setInt(2, aid);
-			createCreditCardStmnt.setDate(3, new java.sql.Date(creditCard.expirationDate.getTime())); // Date CANNOT be null here
-			
-			createCreditCardStmnt.executeUpdate();
-
-			if (shouldCommit) {
-				conn.commit();
+			String pid = "";
+			try (ResultSet cpRS = createPaymentAccountStmnt.getGeneratedKeys()) {
+				cpRS.next();
+				pid = cpRS.getString("pid");
 			}
 			
-			return pid;
+			String createCreditCardCommand = QueryHelper.findQuery("creditCard/createCreditCard.sql");
+
+			try (PreparedStatement createCreditCardStmnt = 
+					conn.prepareStatement(createCreditCardCommand, Statement.RETURN_GENERATED_KEYS)) {
+				createCreditCardStmnt.setString(1, creditCard.pid);
+				createCreditCardStmnt.setInt(2, aid);
+
+				// Date CANNOT be null here
+				createCreditCardStmnt.setDate(3, new java.sql.Date(creditCard.expirationDate.getTime())); 
+				
+				createCreditCardStmnt.executeUpdate();
+
+				if (shouldCommit) {
+					conn.commit();
+				}
+				
+				return pid;
+			}
 		} catch (SQLException e) {
-			System.out.println("Create credit card failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not find createCreditCard query");
-		}
+		} catch (FileNotFoundException e) { }
 		
 		return "";
 	}
@@ -83,10 +90,16 @@ public class CreditCardManager extends AModelManager {
 	public Map<String, CreditCard> getPaymentsByUser(User user) {
 		Map<String, CreditCard> result = new HashMap<String, CreditCard>();
 
+		String query = "";
 		try {
-			String query = QueryHelper.findQuery("creditCard/getCreditCardByUser.sql");
-			PreparedStatement stmnt = conn.prepareStatement(query);
-			
+			query = QueryHelper.findQuery("creditCard/getCreditCardByUser.sql");
+		} catch (FileNotFoundException e1) { 
+			return null;
+		}
+		
+		if (query == "") return null;
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
 			stmnt.setString(1, user.email);
 
 			ResultSet rs = stmnt.executeQuery();
@@ -94,14 +107,10 @@ public class CreditCardManager extends AModelManager {
 			while(rs.next()) {
 				result.put(rs.getString("pid"), new CreditCard(rs));
 			}
-		} catch (SQLException e) {
-			System.out.println("Get lodgings by id failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("lodgings by lid query file was not found");
-			e.printStackTrace();
-		}
-		
+		} catch (SQLException e) { 
+			return null; 
+		} 		
+
 		return result;
 	}
 }

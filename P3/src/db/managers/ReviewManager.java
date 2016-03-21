@@ -13,15 +13,18 @@ import db.util.QueryHelper;
 
 public class ReviewManager extends AModelManager {
 	public void createNewReview(Review review, int bookingId, User user) {
-		// Only a host can create
 		if (!user.isLoggedIn()) {
 			return;
 		}
 		
+		String query;
 		try {
-			String query = QueryHelper.findQuery("reviews/createReview.sql");
-			PreparedStatement stmnt = conn.prepareStatement(query);
-			
+			query = QueryHelper.findQuery("reviews/createNewReview.sql");
+		} catch (FileNotFoundException e1) {
+			return;
+		}
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
 			stmnt.setString(1, user.email);
 			stmnt.setInt(2, bookingId);
 			stmnt.setDate(3, new java.sql.Date(review.reviewDate.getTime()));
@@ -30,64 +33,56 @@ public class ReviewManager extends AModelManager {
 			
 			stmnt.executeUpdate();
 			conn.commit();
-			
-			ResultSet rs = stmnt.getGeneratedKeys();
-			rs.next();
-		} catch (SQLException e) {
-			System.out.println("Create review failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not find createReview query");
-		}
+		} catch (SQLException e) { } 	
 	}
 
 	public List<Review> getReviewByLid(int lid) {
 		List<Review> result = new ArrayList<Review>();
-		
+
+		String query;
 		try {
-			String query = QueryHelper.findQuery("reviews/getReviewsByLid.sql");
-			
-			PreparedStatement stmnt = conn.prepareStatement(query);
+			query = QueryHelper.findQuery("reviews/getReviewsByLid.sql");
+		} catch (FileNotFoundException e1) {
+			return null;
+		}
+		
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
 			stmnt.setInt(1, lid);
 			
-			ResultSet rs = stmnt.executeQuery();
-			
-			while (rs.next()) {
-				result.add(new Review(rs));
+			try (ResultSet rs = stmnt.executeQuery()) {
+				while (rs.next()) {
+					result.add(new Review(rs));
+				}
+				
+				return result;
 			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-			
+		} catch (SQLException e) { } 			
+
 		return null;
 	}
 	
 	public Review getReviewByBid(int bid) {
 		Review result = new Review();
 		
+		String query;
 		try {
-			String query = QueryHelper.findQuery("reviews/getReviewsByBid.sql");
-			
-			PreparedStatement stmnt = conn.prepareStatement(query);
+			query = QueryHelper.findQuery("reviews/getReviewsByBid.sql");
+		} catch (FileNotFoundException e1) {
+			return null;
+		}
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
 			stmnt.setInt(1, bid);
 			
-			ResultSet rs = stmnt.executeQuery();
-			
-			while (rs.next()) {
-				result = new Review(rs);
+			try (ResultSet rs = stmnt.executeQuery()) {
+				while (rs.next()) {
+					result = new Review(rs);
+				}
+				
+				return result;
 			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-			
+		} catch (SQLException e) { } 			
+
 		return null;
 	}
 }

@@ -16,53 +16,48 @@ public class LodgingsManager extends AModelManager {
 	
 	public List<Lodging> getAllLodgings() {
 		List<Lodging> result = new ArrayList<Lodging>();
-		
+
+		String selectLodgingsSQL = "";
 		try {
-			Statement stmnt = conn.createStatement();
-			
-			String selectLodgingsSQL = QueryHelper.findQuery("lodgings/allLodgingsQuery.sql");
-			ResultSet rs = stmnt.executeQuery(selectLodgingsSQL);
-			
-			Lodging l;
-			while (rs.next()) {
-				l = new Lodging(rs);
-				
-				result.add(l);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("get all lodgings failed");
-		} catch (FileNotFoundException e) {
-			System.out.println("all lodgings query file was not found");
-			e.printStackTrace();
+			selectLodgingsSQL = QueryHelper.findQuery("lodgings/allLodgingsQuery.sql");
+		} catch (FileNotFoundException e1) {
+			return null;
 		}
 		
-		return result;
+		if (selectLodgingsSQL == "") return null;
+		
+		try (Statement stmnt = conn.createStatement();) {
+			try (ResultSet rs = stmnt.executeQuery(selectLodgingsSQL)) {
+				while (rs.next()) {
+					result.add(new Lodging(rs));
+				}
+				return result;
+			}
+		} catch (SQLException e) { } 		
+
+		return null;
 	}
 	
 	public Lodging getLodgingByLid(int lid) {
-		Lodging result = null;
-
+		String query = "";
 		try {
-			String query = QueryHelper.findQuery("lodgings/lodgingByLidQuery.sql");
-			PreparedStatement stmnt = conn.prepareStatement(query);
-			
-			stmnt.setInt(1, lid);
-
-			ResultSet rs = stmnt.executeQuery();
-			
-			rs.next();
-			
-			return new Lodging(rs);
-		} catch (SQLException e) {
-			System.out.println("Get lodgings by id failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("lodgings by lid query file was not found");
-			e.printStackTrace();
+			query = QueryHelper.findQuery("lodgings/lodgingByLidQuery.sql");
+		} catch (FileNotFoundException e1) {
+			return null;
 		}
 		
-		return result;
+		if (query == "") return null;
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
+			stmnt.setInt(1, lid);
+
+			try (ResultSet rs = stmnt.executeQuery()) {
+				rs.next();
+				return new Lodging(rs);
+			}
+		} catch (SQLException e) { } 		
+
+		return null;
 	}
 	
 	public int createNewLodging(Lodging lodging, User user) {
@@ -74,12 +69,18 @@ public class LodgingsManager extends AModelManager {
 		AddressManager am = new AddressManager();
 		int addressId = am.createAddress(lodging.address);
 		
-		if (addressId == -1) { return -1; }
+		if (addressId == -1) return -1; 
 
+		String query = "";
 		try {
-			String query = QueryHelper.findQuery("lodgings/createLodging.sql");
-			PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			
+			query = QueryHelper.findQuery("lodgings/createLodging.sql");
+		} catch (FileNotFoundException e1) {
+			return -1;
+		}
+
+		if (query == "") return -1;
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			stmnt.setInt(1, addressId);
 			stmnt.setString(2, user.email);
 			stmnt.setString(3, lodging.name);
@@ -95,41 +96,37 @@ public class LodgingsManager extends AModelManager {
 			stmnt.executeUpdate();
 			conn.commit();
 			
-			ResultSet rs = stmnt.getGeneratedKeys();
-			rs.next();
-			return rs.getInt("lid");
-		} catch (SQLException e) {
-			System.out.println("Create lodging failed");
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not find createLodgings query");
-		}
-		
+			try (ResultSet rs = stmnt.getGeneratedKeys()) {
+				rs.next();
+				return rs.getInt("lid");
+			}
+		} catch (SQLException e) { } 		
+
 		return -1;
 	}
 	
 	public List<Lodging> getOwnedLodgings(User user) {
 		List<Lodging> result = new ArrayList<Lodging>();
-		
+
+		String query = "";
 		try {
-			String query = QueryHelper.findQuery("lodgings/ownedLodgingsQuery.sql");
-			
-			PreparedStatement stmnt = conn.prepareStatement(query);
+			query = QueryHelper.findQuery("lodgings/ownedLodgingsQuery.sql");
+		} catch (FileNotFoundException e1) { 
+			return null;
+		}
+
+		try (PreparedStatement stmnt = conn.prepareStatement(query);) {
 			stmnt.setString(1, user.email);
 			
-			ResultSet rs = stmnt.executeQuery();
-			
-			while (rs.next()) {
-				result.add(new Lodging(rs));
+			try (ResultSet rs = stmnt.executeQuery()) {
+				while (rs.next()) {
+					result.add(new Lodging(rs));
+				}
+				
+				return result;
 			}
-			
-			return result;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-			
+		} catch (SQLException e) { } 			
+
 		return null;
 	}
 }

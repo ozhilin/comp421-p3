@@ -7,15 +7,24 @@ import java.sql.SQLException;
 
 import db.models.User;
 import db.util.QueryHelper;
-import db.util.StringHelper;
 
 public class UserManager extends AModelManager {
-	// No need to return the user id here since the user will have to login anyway
+
+	/**
+	 * No need to return the user id here since the user will have to login anyway
+	 * @param user
+	 */
 	public void createUser(User user) {
+		String insertQuery = "";
 		try {
-			String insertQuery = QueryHelper.findQuery("users/createUser.sql");
-			PreparedStatement pstmnt = conn.prepareStatement(insertQuery);
-			
+			insertQuery = QueryHelper.findQuery("users/createUser.sql");
+		} catch (FileNotFoundException e) {
+			return;
+		}
+		
+		if (insertQuery == "") return;
+
+		try (PreparedStatement pstmnt = conn.prepareStatement(insertQuery);) {
 			pstmnt.setString(1, user.email);
 			pstmnt.setString(2, user.password);
 			pstmnt.setString(3, user.firstName);
@@ -26,54 +35,50 @@ public class UserManager extends AModelManager {
 			if (user.birthdate != null) {
 				pstmnt.setDate(5, new java.sql.Date(user.birthdate.getTime()));
 			} else {
+				pstmnt.setNull(5, java.sql.Types.DATE);
 			}
-			pstmnt.setNull(5, java.sql.Types.DATE);
 
 			pstmnt.executeUpdate();
 			conn.commit();
-		} catch (FileNotFoundException e) {
-			System.out.println("Create query not found");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { }
 	}
 	
 	public User loginUser(String email, String password) {
+		String query = "";
 		try {
-			String query = QueryHelper.findQuery("users/loginUser.sql");
-			PreparedStatement pstmnt = conn.prepareStatement(query);
-			
+			query = QueryHelper.findQuery("users/loginUser.sql");
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+		
+		if (query == "") return null;
+
+		try (PreparedStatement pstmnt = conn.prepareStatement(query);) {
 			pstmnt.setString(1, email);
 			pstmnt.setString(2, password);
 			
-			ResultSet rs = pstmnt.executeQuery();
-			rs.next();
-			
-			User user = new User(rs);
-			return user;
-		} catch (FileNotFoundException e) {
-			System.out.println("Login query not found");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			try (ResultSet rs = pstmnt.executeQuery()) {
+				rs.next();
+				return new User(rs);
+			}
+		} catch (SQLException e) { }
 		
 		return null;
 	}
-	
-	/**
-	 * Create a new user instance and pass it to this method, it will update
-	 * all columns with non null values
-	 * 
-	 * Note, this will update all of the fields but not the email address, 
-	 * since that is impossible, given that the email is our user id.
-	 * @param user
-	 */
+
 	public void updateUser(User user) {
+		String updateQuery = "";
 		try {
-			String updateQuery = QueryHelper.findQuery("users/updateUser.sql");
-			PreparedStatement pstmnt = conn.prepareStatement(updateQuery);
-			
+			updateQuery = QueryHelper.findQuery("users/updateUser.sql");
+		} catch (FileNotFoundException e1) {
+			return;
+		}
+		
+		if (updateQuery == "") {
+			return;
+		}
+		
+		try (PreparedStatement pstmnt = conn.prepareStatement(updateQuery);) {
 			pstmnt.setString(1, user.firstName);
 			pstmnt.setString(2, user.lastName);
 			pstmnt.setBoolean(4, user.isCustomer);
@@ -88,11 +93,6 @@ public class UserManager extends AModelManager {
 			
 			pstmnt.executeUpdate();
 			conn.commit();
-		} catch (FileNotFoundException e) {
-			System.out.println("Update query not found");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) { }
 	}
 }
