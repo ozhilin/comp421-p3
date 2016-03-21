@@ -1,5 +1,10 @@
 # COMP 421: Apartment Rental Service
 
+- Dang Khoa Do - 260584925 
+- Yordan Neshev - 260587938 
+- Cecile Robert-Michon - 260552816 
+- Oleg Zhilin - 260581713
+
 ## Instructions
 
 ## Installation
